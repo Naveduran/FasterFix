@@ -34,10 +34,9 @@ if not all(env_variables):
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [ '3.15.141.149' ]
 
 # Application definition
 
