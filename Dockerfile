@@ -16,7 +16,12 @@ ENV SECRET_KEY $SECRET_KEY
 COPY . /code/
 WORKDIR /code/
 
+RUN npm install
+# If you are building your code for production
+# RUN npm ci --only=production
+
 RUN pip3 install -r requirements.txt
+
 RUN python manage.py makemigrations
 RUN python manage.py migrate
 
