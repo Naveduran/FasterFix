@@ -34,10 +34,10 @@ if not all(env_variables):
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = [ '3.15.141.149' ]
-# ALLOWED_HOSTS = [ '*' ]
+# ALLOWED_HOSTS = [ '3.15.141.149' ]
+ALLOWED_HOSTS = [ '*' ]
 
 # Application definition
 
@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'rest_framework',
     'api',
 ]
 
