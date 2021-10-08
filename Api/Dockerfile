@@ -13,7 +13,7 @@ ENV DB_USER $DB_USER
 ENV DB_PASSWORD $DB_PASSWORD
 ENV SECRET_KEY $SECRET_KEY
 
-COPY . /code/
+COPY Api/ /code/
 WORKDIR /code/
 
 RUN pip3 install -r requirements.txt
