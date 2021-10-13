@@ -18,11 +18,22 @@ class Agent(AbstractBaseUser, PermissionsMixin):
     - Authenticates with an email and password.
     - Has permissions derived from its position.
     """
+    USER_TYPE_CHOICES = (
+        ('csa', 'Client Service Agent'),
+        ('sender', 'Logistics Coordinator'),
+        ('author', 'Manager'),
+        ('sparer', 'Spares Keeper'),
+        ('storer', 'Storage Manager'),
+        ('tech', 'Technician'),
+        ('casher', 'Accountant'),
+        ('other', ''),
+        ('seller', 'Seller'),
+        ('client', 'Client')
+    )
+    user_type = models.CharField(max_length=7, choices=USER_TYPE_CHOICES)
     name = models.CharField(max_length=50)
-    email = models.EmailField(unique=True, blank=False)
+    email = models.EmailField(unique=True)
     username = None  # overwritte basic model to omit this field
-    position = models.CharField(max_length=30)
-
     USERNAME_FIELD = 'email'  # Using the email for authentication
     REQUIRED_FIELDS = ['position']  # required to create the user
 
@@ -32,8 +43,9 @@ class Agent(AbstractBaseUser, PermissionsMixin):
         """Returns the name and position of a user instance
         Usage: User.__str__()
         """
-        return ("Id : {}\nName: {}\nEmail: {}\nPosition: {}\n".format(
-            self.id, self.name, self.email, self.position))
+        string = "Agent : {}\nId: {}\nEmail: {}\nUser Type: {}\n".format(
+            self.name, self.id, self.email, self.user_type)
+        return string
 
 
 class Product(models.Model):
@@ -80,13 +92,13 @@ class Customer(models.Model):
     the warranty request.
     - The city and adress are required for pickup or transportation purposes.
     """
-    id = models.PositiveSmallIntegerField(primary_key=True, null=False,
-                                          blank=False)  # DNI
+    id = models.PositiveIntegerField(primary_key=True, null=False,
+                                     blank=False)  # DNI
     name = models.CharField(max_length=45, null=False, blank=False)
     phone = models.PositiveIntegerField(null=False, blank=False)
     email = models.CharField(max_length=45, null=False, blank=False)
     city = models.CharField(max_length=45, null=False, blank=False)
-    adress = models.CharField(max_length=10, null=False, blank=False)
+    adress = models.CharField(max_length=100, null=False, blank=False)
 
     def __str__(self):
         string = """Customer: {}\nDNI(id): {}\nPhone: {}\nEmail: {}
@@ -179,12 +191,38 @@ class Action(models.Model):
     - Pickup and delivery numbers: number given by the shippings company that
     identifies the shipping.
     """
+    ACTION_CHOICES = (
+        # Initial actions
+        (1, 'Bought'),
+        (2, 'Registered'),
+        # Optional actions depending on the case
+        (3, 'PickedUp'),
+        (4, 'Stored'),
+        (5, 'Diagnosed'),
+        (6, 'Spares checked'),
+        (7, 'Changed Path'),
+        (8, 'Options given'),
+        (9, 'Authorized spares'),
+        (10, 'Authorized voucher / money back'),
+        (11, 'Authorized other solution'),
+        # Solutions
+        (12, 'Money given'),
+        (13, 'Voucher given'),
+        (14, 'Repaired'),
+        (15, 'Reference Changed'),
+        # Pre-closing
+        (16, 'Letter written'),
+        (17, 'Packaged'),
+        (18, 'Delivered'),
+        (19, 'Warranty denied'),
+        # Closing
+        (20, 'Closed'),
+    )
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    action = models.CharField(max_length=50, null=False, blank=False)
-    note = models.CharField(max_length=800, null=False, blank=False)
-    datetime = models.DateTimeField(auto_now_add=True, null=False,
-                                    blank=False, editable=False)
-    next = models.CharField(max_length=50, null=False, blank=False)
+    action = models.PositiveSmallIntegerField(choices=ACTION_CHOICES)
+    note = models.TextField(max_length=500)
+    datetime = models.DateTimeField(auto_now_add=True, editable=False)
+    next = models.PositiveSmallIntegerField(choices=ACTION_CHOICES)
 
     agent = models.ForeignKey('Agent', related_name='actions',
                               on_delete=models.CASCADE)
