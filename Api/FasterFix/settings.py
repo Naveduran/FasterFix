@@ -36,7 +36,7 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ '3.15.141.149' ]
+ALLOWED_HOSTS = ['3.15.141.149']
 # ALLOWED_HOSTS = [ '*' ]
 
 # Application definition
@@ -104,6 +104,9 @@ DATABASES = {
     }
 }
 
+# Use the model Agent to anage the authentication
+AUTH_USER_MODEL = 'api.Agent'
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -149,4 +152,5 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Enable port to CORS in  the whitelist
-CORS_ORIGIN_WHITELIST = ('http://localhost:5000', 'http://localhost:3000', 'http://localhost:8000')
+CORS_ORIGIN_WHITELIST = ('http://localhost:5000',
+                         'http://localhost:3000', 'http://localhost:8000')
