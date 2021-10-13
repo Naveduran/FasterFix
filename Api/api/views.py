@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
+from api.models import Product, Customer, Purchase, Request
+from api.methods import create_customer, create_product, create_purchase, create_request
 
 class Active(APIView):
     def get(self, request, pk, format=None):
@@ -59,9 +60,43 @@ class Case(APIView):
 
 
 class NewCase(APIView):
-    def get(self, request, format=None):
-        return Response({"route:":"/api/specific_case/<id_case>",
-                         "action:": "Creating new case"})
+    def post(self, request):
+        """Method to create new case
+
+        first create Customer, Product and Purchase to create the case
+
+        Args:
+
+        pr_reference:   Reference of the product (str)
+        pr_name:        Name of the product (str)
+
+        bill_id:        Identification of the purchase (int)
+        bill_date:      Date of the purchase
+
+        cst_dni:        DNI of the customer
+        cst_name:       Name of the customer
+        cst_phone:      Phone of the customer
+        cst_email:      Email of the customer
+        cst_address:    Address of the customer
+        cst_location:   City or Department of the customer
+
+        height:         Height of the product
+        width:          Width of the product
+        deep:           Deep of the product
+        weight:         Weight of the product
+
+        motive:         Motive of the request
+        """
+        client = create_customer(request.data)
+        product = create_product(request.data)
+        purchase = create_purchase(request.data)
+        new_request = create_request(request.data, client, product, purchase)
+        return Response({"route:":"/api/new_case",
+                         "product:":  str(new_request.product),
+                         "customer:": str(new_request.customer.name),
+                         "purchase:": str(new_request.purchase.id),
+                         "request:": str(new_request.id),
+                         "motive:" : new_request.motive})
 
 
 class Action(APIView):
