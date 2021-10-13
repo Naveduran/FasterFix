@@ -1,10 +1,14 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from api.models import Product, Customer, Purchase, Request
+from api.models import Product, Customer, Purchase, Request, Agent, Action
 from api.methods import create_customer, create_product, create_purchase, create_request
+from api.serializers import RequestSerializer, ActionSerializer, AgentSerializer
+from api.serializers import PurchaseSerializer, ProductSerializer, CustomerSerializer
+from django.http import JsonResponse
 
 class Active(APIView):
-    def get(self, request, pk, format=None):
+    def get(self, request, pk,
+            format=None):
         return Response({"route:":"/api/active/<id_agent>",
                          "user:":pk})
 
@@ -17,45 +21,51 @@ class Done(APIView):
 
 class All(APIView):
     def get(self, request, object_in, format=None):
+        cases = {object_in:"is incorret parameter"}
         if object_in == "id":
-            return Response({"route:":"/api/all/id",
-                             "Object:":object_in})
-        if object_in == "date":
-            return Response({"route:":"/api/all/date",
-                             "Object:":object_in})
-        if object_in == "client":
-            return Response({"route:":"/api/all/client",
-                             "Object:":object_in})
-        if object_in == "product":
-            return Response({"route:":"/api/all/product",
-                             "Object:":object_in})
+            cases = Request.objects.values_list('id')
+
+        elif object_in == "date":
+            cases = Request.objects.values_list('datetime')
+
+        elif object_in == "client":
+            cases = Request.objects.values_list('customer_id')
+        elif object_in == "product":
+            cases = Request.objects.values_list('product_id')
+        elif object_in == "next_action":
+            actions = Action.objects.all()
+            serializer = ActionSerializer(actions, many=True)
+            cases = serializer.data
+
+        return Response(cases)
 
 
 
 class AllActive(APIView):
     def get(self, request, object_in, format=None):
+        cases = {object_in:"is incorret parameter"}
         if object_in == "id":
-            return Response({"route:":"/api/all/active/id",
-                             "Object:":object_in})
-        if object_in == "date":
-            return Response({"route:":"/api/all/active/date",
-                             "Object:":object_in})
-        if object_in == "client":
-            return Response({"route:":"/api/all/active/client",
-                             "Object:":object_in})
-        if object_in == "product":
-            return Response({"route:":"/api/all/active/product",
-                             "Object:":object_in})
-        if object_in == "next_action":
-            return Response({"route:":"/api/all/active/next_action",
-                             "Object:":object_in})
+            cases = Request.objects.values_list('id').filter(status='Active')
 
+        elif object_in == "date":
+            cases = Request.objects.values_list('datetime').filter(status='Active')
+
+        elif object_in == "client":
+            cases = Request.objects.values_list('customer_id').filter(status='Active')
+        elif object_in == "product":
+            cases = Request.objects.values_list('product_id').filter(status='Active')
+
+        return Response(cases)
 
 
 class Case(APIView):
     def get(self, request, pk, format=None):
-        return Response({"route:":"/api/specific_case/<id_case>",
-                         "case:":pk})
+        try:
+            case = Request.objects.get(id=pk)
+            serializer = RequestSerializer(case)
+            return Response(serializer.data)
+        except:
+            return Response({pk:"Don't found"})
 
 
 
@@ -93,10 +103,9 @@ class NewCase(APIView):
         new_request = create_request(request.data, client, product, purchase)
         return Response({"route:":"/api/new_case",
                          "product:":  str(new_request.product),
-                         "customer:": str(new_request.customer.name),
+                         "customer:": str(new_request.customer),
                          "purchase:": str(new_request.purchase.id),
-                         "request:": str(new_request.id),
-                         "motive:" : new_request.motive})
+                         "request:": str(new_request)})
 
 
 class Action(APIView):
