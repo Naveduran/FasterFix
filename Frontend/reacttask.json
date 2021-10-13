@@ -25,11 +25,11 @@
       "workingDirectory": null,
       "secrets": null,
       "dockerSecurityOptions": null,
-      "memory": 500,
-      "memoryReservation": 300,
+      "memory": null,
+      "memoryReservation": 500,
       "volumesFrom": [],
       "stopTimeout": null,
-      "image": "440112911183.dkr.ecr.us-east-2.amazonaws.com/reactrepository",
+      "image": "440112911183.dkr.ecr.us-east-2.amazonaws.com/reactrepository:latest",
       "startTimeout": null,
       "firelensConfiguration": null,
       "dependsOn": null,
@@ -56,7 +56,7 @@
     "EXTERNAL",
     "EC2"
   ],
-  "taskDefinitionArn": "arn:aws:ecs:us-east-2:440112911183:task-definition/reacttask:1",
+  "taskDefinitionArn": "arn:aws:ecs:us-east-2:440112911183:task-definition/reacttask:2",
   "family": "reacttask",
   "requiresAttributes": [
     {
@@ -78,7 +78,7 @@
   ],
   "networkMode": null,
   "cpu": null,
-  "revision": 1,
+  "revision": 2,
   "status": "ACTIVE",
   "inferenceAccelerators": null,
   "proxyConfiguration": null,
