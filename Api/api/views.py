@@ -10,6 +10,7 @@ from api.serializers import (RequestSerializer, ActionSerializer,
 
 class Active(APIView):
     """Return active requests"""
+
     def get(self, request, pk, format=None):
         """ Return all the requests that an agent
         can make according to its usertype.
@@ -21,12 +22,16 @@ class Active(APIView):
 
 class Done(APIView):
     """Return solved requests for a user"""
+
     def get(self, request, pk, format=None):
         """ Return all the requests that an agent have
         done according to its id.
         Use: /api/done/<int:agent_id>"""
         cases = []
-        agent = Agent.objects.get(id=pk)
+        try:
+            agent = Agent.objects.get(id=pk)
+        except:
+            return Response({'agent_id': 'Not found'})
         actions = Action.objects.filter(agent=agent).order_by('-datetime')
         for a in actions:
             cases.append(a.request)
@@ -36,38 +41,34 @@ class Done(APIView):
 
 class AllDone(APIView):
     """Return all the requests solved"""
-    def get(self, request, object_in, format=None):
-        cases = {object_in: "is incorret parameter"}
-        if object_in == "-id":
-            cases = Request.objects.order_by('-id')
-        elif object_in == "+id":
-            cases = Request.objects.order_by('+id')
-        elif object_in == "date":
-            cases = Request.objects.values_list('datetime')
-        elif object_in == "client":
-            cases = Request.objects.values_list('customer_id')
-        elif object_in == "product":
-            cases = Request.objects.values_list('product_id')
-        elif object_in == "next_action":
-            actions = Action.objects.all()
-            serializer = ActionSerializer(actions, many=True)
-            cases = serializer.data
+
+    def get(self, request, order_criteria, format=None):
+        """Return all requests records, only for closed cases"""
+        listt = ['-id', '+id', '-datetime', '+datetime', '-customer_id',
+                 '+customer_id', '-product_id', '+product_id']
+        if not order_criteria in listt:
+            return Response({cases={'order_criteria': "Incorrect parameter. Use: id, datetime, customer, or product with + or - at the beginning to define descending or ascending order"})
+        cases = Request.objects.filter(status=20).order_by(order_criteria)
+        serializer = RequestSerializer(cases, many=True)
         return Response(cases)
 
 
 class AllActive(APIView):
     def get(self, request, object_in, format=None):
-        cases = {object_in:"is incorret parameter"}
+        cases = {object_in: "is incorret parameter"}
         if object_in == "id":
             cases = Request.objects.values_list('id').filter(status='Active')
 
         elif object_in == "date":
-            cases = Request.objects.values_list('datetime').filter(status='Active')
+            cases = Request.objects.values_list(
+                'datetime').filter(status='Active')
 
         elif object_in == "client":
-            cases = Request.objects.values_list('customer_id').filter(status='Active')
+            cases = Request.objects.values_list(
+                'customer_id').filter(status='Active')
         elif object_in == "product":
-            cases = Request.objects.values_list('product_id').filter(status='Active')
+            cases = Request.objects.values_list(
+                'product_id').filter(status='Active')
         return Response(cases)
 
 
@@ -78,7 +79,7 @@ class Case(APIView):
             serializer = RequestSerializer(case)
             return Response(serializer.data)
         except:
-            return Response({pk:"Don't found"})
+            return Response({pk: "Don't found"})
 
 
 
@@ -114,7 +115,7 @@ class NewCase(APIView):
         product = create_product(request.data)
         purchase = create_purchase(request.data)
         new_request = create_request(request.data, client, product, purchase)
-        return Response({"route:":"/api/new_case",
+        return Response({"route:": "/api/new_case",
                          "product:":  str(new_request.product),
                          "customer:": str(new_request.customer),
                          "purchase:": str(new_request.purchase.id),
@@ -123,7 +124,7 @@ class NewCase(APIView):
 
 class Act(APIView):
     def get(self, request, pk_agent, pk_case, format=None):
-        return Response({"route:":"/api/specific_case/<id_case>",
+        return Response({"route:": "/api/specific_case/<id_case>",
                          "agent:": pk_agent,
                          "case:": pk_case})
 
@@ -131,5 +132,5 @@ class Act(APIView):
 
 class Seller(APIView):
     def get(self, request, pk, format=None):
-        return Response({"route:":"/api/seller/<id_seller>",
+        return Response({"route:": "/api/seller/<id_seller>",
                          "seller:": pk})
