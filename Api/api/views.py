@@ -1,33 +1,44 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from api.models import Product, Customer, Purchase, Request, Agent, Action
-from api.methods import create_customer, create_product, create_purchase, create_request
-from api.serializers import RequestSerializer, ActionSerializer, AgentSerializer
-from api.serializers import PurchaseSerializer, ProductSerializer, CustomerSerializer
-from django.http import JsonResponse
+from api.methods import (create_customer, create_product, create_purchase,
+                         create_request)
+from api.serializers import (RequestSerializer, ActionSerializer,
+                             AgentSerializer, PurchaseSerializer,
+                             ProductSerializer, CustomerSerializer)
+
 
 class Active(APIView):
-    def get(self, request, pk,
-            format=None):
-        return Response({"route:":"/api/active/<id_agent>",
-                         "user:":pk})
+    """Return active requests"""
+    def get(self, request, pk, format=None):
+        """ Return all the requests that an agent
+        can make according to its usertype.
+        Use: /api/active/<int:user_type>"""
+        listt = []
+        requests = Request.objects.filter(next=pk)
+        serializer = RequestSerializer(requests, many=True)
+        return Response(serializer.data)
 
 
 class Done(APIView):
+    """Return solved requests"""
     def get(self, request, pk, format=None):
-        return Response({"route:":"/api/done/<id_agent>",
-                         "user:":pk})
+        """ Return all the requests that an agent_type have
+        done according to its usertype.
+        Use: /api/done/<int:user_type>"""
+        listt = []
+        requests = Request.objects.filter(status=pk)
+        serializer = RequestSerializer(requests, many=True)
+        return Response(serializer.data)
 
 
 class All(APIView):
     def get(self, request, object_in, format=None):
-        cases = {object_in:"is incorret parameter"}
+        cases = {object_in: "is incorret parameter"}
         if object_in == "id":
             cases = Request.objects.values_list('id')
-
         elif object_in == "date":
             cases = Request.objects.values_list('datetime')
-
         elif object_in == "client":
             cases = Request.objects.values_list('customer_id')
         elif object_in == "product":
@@ -36,9 +47,7 @@ class All(APIView):
             actions = Action.objects.all()
             serializer = ActionSerializer(actions, many=True)
             cases = serializer.data
-
         return Response(cases)
-
 
 
 class AllActive(APIView):
@@ -54,7 +63,6 @@ class AllActive(APIView):
             cases = Request.objects.values_list('customer_id').filter(status='Active')
         elif object_in == "product":
             cases = Request.objects.values_list('product_id').filter(status='Active')
-
         return Response(cases)
 
 
