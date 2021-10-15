@@ -72,14 +72,6 @@ class Agent(AbstractBaseUser, PermissionsMixin):
     permissions = []  # get them in api/utils, and set in the cruds
     objects = UserManager()
 
-    def __str__(self):
-        """Returns the name and position of a user instance
-        Usage: User.__str__()
-        """
-        string = "Agent : {}\nId: {}\nEmail: {}\nUser Type: {}\n".format(
-            self.name, self.id, self.email, self.user_type)
-        return string
-
 
 class Product(models.Model):
     """An object that is selled by the company.
@@ -109,11 +101,6 @@ class Product(models.Model):
         return ("{} cm x {} cm x {} cm, {} kg".format(
             self.height, self.width, self.depth, self.weight))
 
-    def __str__(self):
-        string = "Product {}\nId: {}\nColor: {}\nDimensions: {}\n".format(
-            self.name, self.id, self.color, self.dimensions())
-        return string
-
 
 class Customer(models.Model):
     """The person that buyed the product, or cames to register the request.
@@ -129,13 +116,6 @@ class Customer(models.Model):
     email = models.CharField(max_length=45)
     city = models.CharField(max_length=45)
     adress = models.CharField(max_length=100)
-
-    def __str__(self):
-        string = """Customer: {}\nDNI(id): {}\nPhone: {}\nEmail: {}
-City: {}\nAdress: {}\n""".format(self.name, self.id, self.phone,
-                                 self.email, self.city,
-                                 self.adress)
-        return string
 
 
 class Purchase(models.Model):
@@ -156,13 +136,7 @@ class Purchase(models.Model):
     note = models.CharField(max_length=40, default='', blank=True)
     seller = models.ForeignKey('Agent', on_delete=models.SET_DEFAULT,
                                default='', null=True,
-                               limit_choices_to={'position': 'Seller'})
-
-    def __str__(self):
-        string = """Purchase\nId: {}\nDateTime: {}
-Note: {}\nSeller: {}\n""".format(self.id, self.datetime,
-                                 self.note, self.seller)
-        return string
+                               limit_choices_to={'user_type': 'seller'})
 
 
 class Request(models.Model):
@@ -201,15 +175,6 @@ class Request(models.Model):
     purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE,
                                  related_name='requests')
 
-    def __str__(self):
-        string = """Request: {}\nMotive: {}\nDatetime: {}
-Status: {}\nNext: {}\nPhotos: {}\nCustomer: {}\nProduct: {}
-Purchased: {}\n""".format(self.id, self.motive, self.datetime,
-                          self.status, self.next, self.photos,
-                          self.customer.name, self.product.name,
-                          self.purchase.datetime)
-        return string
-
 
 class Action(models.Model):
     """An agent adds actions to a request. The first action is the registration
@@ -237,11 +202,3 @@ class Action(models.Model):
     request = models.ForeignKey('Request', related_name='actions',
                                 on_delete=models.CASCADE)
     part = models.CharField(max_length=50, default='')
-
-    def __str__(self):
-        string = """Action: {}\nId: {}\nNote: {}\nDatetime: {}\nNext: {}
-Agent: {}\nRequest: {}\n""".format(self.action, self.id, self.note,
-                                   self.datetime, self.next,
-                                   self.agent.name,
-                                   self.request.id, self.part)
-        return string
