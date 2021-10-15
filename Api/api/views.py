@@ -21,13 +21,14 @@ class Active(APIView):
 
 
 class Done(APIView):
-    """Return solved requests"""
+    """Return solved requests for a user"""
     def get(self, request, pk, format=None):
-        """ Return all the requests that an agent_type have
-        done according to its usertype.
-        Use: /api/done/<int:user_type>"""
+        """ Return all the requests that an agent have
+        done according to its id.
+        Use: /api/done/<int:agent_id>"""
         listt = []
-        requests = Request.objects.filter(status=pk)
+        agent = Agent.objects.get(id=pk)
+        requests = Action.objects.filter(agent=agent).order_by('-datetime')
         serializer = RequestSerializer(requests, many=True)
         return Response(serializer.data)
 
