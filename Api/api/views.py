@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from api.models import Product, Customer, Purchase, Request, Agent, Action
+from api.models import Action, Agent, Customer, Product, Purchase, Request
 from api.methods import (create_customer, create_product, create_purchase,
                          create_request)
 from api.serializers import (RequestSerializer, ActionSerializer,
@@ -14,9 +14,8 @@ class Active(APIView):
         """ Return all the requests that an agent
         can make according to its usertype.
         Use: /api/active/<int:user_type>"""
-        listt = []
-        requests = Request.objects.filter(next=pk)
-        serializer = RequestSerializer(requests, many=True)
+        cases = Request.objects.filter(next=pk)
+        serializer = RequestSerializer(cases, many=True)
         return Response(serializer.data)
 
 
@@ -26,18 +25,23 @@ class Done(APIView):
         """ Return all the requests that an agent have
         done according to its id.
         Use: /api/done/<int:agent_id>"""
-        listt = []
+        cases = []
         agent = Agent.objects.get(id=pk)
-        requests = Action.objects.filter(agent=agent).order_by('-datetime')
-        serializer = RequestSerializer(requests, many=True)
+        actions = Action.objects.filter(agent=agent).order_by('-datetime')
+        for a in actions:
+            cases.append(a.request)
+        serializer = RequestSerializer(cases, many=True)
         return Response(serializer.data)
 
 
-class All(APIView):
+class AllDone(APIView):
+    """Return all the requests solved"""
     def get(self, request, object_in, format=None):
         cases = {object_in: "is incorret parameter"}
-        if object_in == "id":
-            cases = Request.objects.values_list('id')
+        if object_in == "-id":
+            cases = Request.objects.order_by('-id')
+        elif object_in == "+id":
+            cases = Request.objects.order_by('+id')
         elif object_in == "date":
             cases = Request.objects.values_list('datetime')
         elif object_in == "client":
@@ -117,7 +121,7 @@ class NewCase(APIView):
                          "request:": str(new_request)})
 
 
-class Action(APIView):
+class Act(APIView):
     def get(self, request, pk_agent, pk_case, format=None):
         return Response({"route:":"/api/specific_case/<id_case>",
                          "agent:": pk_agent,
