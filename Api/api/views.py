@@ -44,31 +44,31 @@ class AllDone(APIView):
 
     def get(self, request, order_criteria, format=None):
         """Return all requests records, only for closed cases"""
+        error_str = """Incorrect parameter. Use: id, datetime, customer, or
+product with + or - at the beginning to define descending or ascending order"""
         listt = ['-id', '+id', '-datetime', '+datetime', '-customer_id',
                  '+customer_id', '-product_id', '+product_id']
-        if not order_criteria in listt:
-            return Response({cases={'order_criteria': "Incorrect parameter. Use: id, datetime, customer, or product with + or - at the beginning to define descending or ascending order"})
+        if order_criteria not in listt:
+            return Response({'order_criteria': error_str})
         cases = Request.objects.filter(status=20).order_by(order_criteria)
         serializer = RequestSerializer(cases, many=True)
         return Response(cases)
 
 
 class AllActive(APIView):
-    def get(self, request, object_in, format=None):
-        cases = {object_in: "is incorret parameter"}
-        if object_in == "id":
-            cases = Request.objects.values_list('id').filter(status='Active')
+    """Return all the requests solved"""
 
-        elif object_in == "date":
-            cases = Request.objects.values_list(
-                'datetime').filter(status='Active')
-
-        elif object_in == "client":
-            cases = Request.objects.values_list(
-                'customer_id').filter(status='Active')
-        elif object_in == "product":
-            cases = Request.objects.values_list(
-                'product_id').filter(status='Active')
+    def get(self, request, order_criteria, format=None):
+        """Return all requests records, only for closed cases"""
+        error_str = """Incorrect parameter. Use: id, datetime, customer, or
+product with + or - at the beginning to define descending or ascending order"""
+        listt = ['-id', '+id', '-datetime', '+datetime', '-customer_id',
+                 '+customer_id', '-product_id', '+product_id',
+                 '+next', '-next']
+        if order_criteria not in listt:
+            return Response({'order_criteria': error_str})
+        cases = Request.objects.exclude(status=20).order_by(order_criteria)
+        serializer = RequestSerializer(cases, many=True)
         return Response(cases)
 
 
@@ -80,7 +80,6 @@ class Case(APIView):
             return Response(serializer.data)
         except:
             return Response({pk: "Don't found"})
-
 
 
 class NewCase(APIView):
@@ -127,7 +126,6 @@ class Act(APIView):
         return Response({"route:": "/api/specific_case/<id_case>",
                          "agent:": pk_agent,
                          "case:": pk_case})
-
 
 
 class Seller(APIView):
