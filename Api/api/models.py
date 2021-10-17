@@ -190,7 +190,6 @@ class Action(models.Model):
     - Pickup and delivery numbers: number given by the shippings company that
     identifies the shipping.
     """
-
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     action = models.PositiveSmallIntegerField(choices=ACTION_CHOICES)
     note = models.TextField(max_length=500)

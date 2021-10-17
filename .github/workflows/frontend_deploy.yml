@@ -1,5 +1,5 @@
 # This workflow will build and push a new container image to Amazon ECR,
-# and then will deploy a new task definition to Amazon ECS, when a release is created
+# and then will deploy a new task definition to Amazon ECS, when there is a push to the main branch.
 #
 # To use this workflow, you will need to complete the following set-up steps:
 #
@@ -24,23 +24,23 @@
 #    See the documentation for each action used below for the recommended IAM policies for this IAM user,
 #    and best practices on handling the access key credentials.
 
-name: Deploy to Amazon ECS
+name: Deploy Frontend
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main , React ]
   pull_request:
-    branches: [ main ]
+    branches: [ main , React ]
 
 env:
-  AWS_REGION: us-east-2             # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: caprepo           # set this to your Amazon ECR repository name
-  ECS_SERVICE: capservice           # set this to your Amazon ECS service name
-  ECS_CLUSTER: capcluster           # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: Api/task.json # set this to the path to your Amazon ECS task definition
-                                    # file, e.g. .aws/task-definition.json
-  CONTAINER_NAME: capcontainer      # set this to the name of the container in the
-                                    # containerDefinitions section of your task definition
+  AWS_REGION: us-east-2                  # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: reactrepository           # set this to your Amazon ECR repository name
+  ECS_SERVICE: reactservice                # set this to your Amazon ECS service name
+  ECS_CLUSTER: reactcluster                # set this to your Amazon ECS cluster name
+  ECS_TASK_DEFINITION: Frontend/reacttask.json # set this to the path to your Amazon ECS task definition
+                                               # file, e.g. .aws/task-definition.json
+  CONTAINER_NAME: reactcontainer           # set this to the name of the container in the
+                                               # containerDefinitions section of your task definition
 
 jobs:
   deploy:
@@ -67,12 +67,12 @@ jobs:
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: latest
+        IMAGE_TAG: ${{ github.sha }}
       run: |
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg DB_HOST=${{ secrets.DB_HOST }} --build-arg DB_NAME=${{ secrets.DB_NAME }} --build-arg DB_USER=${{ secrets.DB_USER }} --build-arg DB_PASSWORD=${{ secrets.DB_PASSWORD }} --build-arg SECRET_KEY=${{ secrets.SECRET_KEY }} -f Api/Dockerfile .
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Frontend/Dockerfile Frontend
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
