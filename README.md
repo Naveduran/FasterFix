@@ -1,3 +1,4 @@
+
 # FasterFix
 
 FasterFix is a system for the management of the warranties for little and medium-sized companies, which have different work areas as accountability, client service, storage, logistics, and management.
@@ -7,13 +8,13 @@ This tool acknowledges the role of every part of the company in the client servi
 ## Web app
 
 The web app was developed with React technologies and the views designed for each agent, allowing:
-* Client service agent: register, communicate with the client and change path.
-* Technician: diagnose and repair.
-* Logistic Coordinator: pickup and delivery.
-* Sparer Keeper: check availability of spare parts.
-* Storage manager: save in storage and package.
-* Manager: authorize parts and refunds.
-* Accountant: redeemable vouchers and refunds.
+* **Client service agent**: register, communicate with the client and change path.
+* **Technician**: diagnose and repair.
+* **Logistic Coordinator**: pickup and delivery.
+* **Sparer Keeper**: check availability of spare parts.
+* **Storage manager**: save in storage and package.
+* **Manager**: authorize parts and refunds.
+* **Accountant**: redeemable vouchers and refunds.
 
 ## Environment
 
@@ -29,12 +30,12 @@ For more detailed description, see the requirements for the [backend](/Api/requi
 
 ### The Database
 The database is defined in python code using the Django ORM, in the file [models.py](/Api/api/models.py).
-* Agent: a company collaborator that can take actions in the solution of a case.
-* Product: an object sold by the company that requires a service.
-* Customer: the client who bought the product and presents the warranty request.
-* Purchase: the registration of date and products bought for a client in a date, and associated with a bill.
-* Request: the registration of the warranty request. It is associated with a customer, a product, and a purchase.
-* Action: the registration of each action made by an agent to solve the case.
+* **Agent:** a company collaborator that can take actions in the solution of a case.
+* **Product:** an object sold by the company that requires a service.
+* **Customer:** the client who bought the product and presents the warranty request.
+* **Purchase:** the registration of date and products bought for a client in a date, and associated with a bill.
+* **Request:** the registration of the warranty request. It is associated with a customer, a product, and a purchase.
+* **Action:** the registration of each action made by an agent to solve the case.
 
 ### The API
 
@@ -74,16 +75,27 @@ The deployment of this project was done using RDS, and ECS from AWS, with the Gi
 ## Examples of use
 
 
+## Not included features(yet):
+- Import previous cases information. Each case needs to start from the beginning to be managed in this system.
+- Users creation and authentication.
+- Desktop and mobile applications.
+- Show statistics.
+- Automatic Abuse Cases Detection.
+- DIY Personalized views.
+- DIY Personalized workflow.
+- Client communication system
+- Technical service outside the warranty period.
+- Costs tracking of the warranty process.
+- Scan bar codes and QR codes.
+- The process to send the warranties back to the vendors to recover money.
+
 ## Bugs
 No known bugs at this time.
 
 ## Authors
-* Julieth Gonzalez [ [Github](https://github.com/jyuly12),  [Twitter](https://twitter.com/jyuly12) & [LinkedIn](https://www.linkedin.com/in/julieth-gonzalez-a36033208/) ]
-
-* Natalia Vera [ [Github](https://github.com/Naveduran),  [Twitter](https://twitter.com/NaVeDuran1) & [LinkedIn](https://www.linkedin.com/in/naveduran/) ]
-
-* Manuel Bedoya [ [Github](https://github.com/ManuBedoya), [Twitter](https://twitter.com/BedoyaManu98) & [LinkedIn](https://www.linkedin.com/in/manuel-fernando-bedoya-garcia-ba33971b5/) ]
+* Julieth Gonzalez as Frontend Developer: [Github](https://github.com/jyuly12), [Twitter](https://twitter.com/jyuly12) & [LinkedIn](https://www.linkedin.com/in/julieth-gonzalez-a36033208/) 
+* Manuel Bedoya as Backend Developer: [Github](https://github.com/ManuBedoya), [Twitter](https://twitter.com/BedoyaManu98) & [LinkedIn](https://www.linkedin.com/in/manuel-fernando-bedoya-garcia-ba33971b5/) 
+* Natalia Vera as Backend and DevOps: [Github](https://github.com/Naveduran), [Twitter](https://twitter.com/NaVeDuran1) & [LinkedIn](https://www.linkedin.com/in/naveduran/)
 
 ## License
 Public Domain. No copy write protection.
-
