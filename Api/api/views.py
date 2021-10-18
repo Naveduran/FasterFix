@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from api.models import Action, Agent, Customer, Product, Purchase, Request
 from api.methods import (create_customer, create_product, create_purchase,
-                         create_request, create_action)
+                         create_request, update_action)
 from api.serializers import (RequestSerializer, ActionSerializer,
                              AgentSerializer, PurchaseSerializer,
                              ProductSerializer, CustomerSerializer)
@@ -122,9 +122,15 @@ class NewCase(APIView):
 
 
 class Act(APIView):
-    def post(self, request, pk_agent, pk_case, format=None):
-        action = create_action(pk_agent, pk_case)
-        return Response({"Action:":action.data()})
+    def get(self, request, pk_agent, pk_case, format=None):
+        action = Action.objects.get(agent_id=pk_agent, request_id=pk_case)
+        agent = Agent.objects.get(id=pk_agent)
+        action.agent_id = agent.id
+        action.note = "something"
+        action.next = action.next + 1
+        action.save()
+        serializer = ActionSerializer(action)
+        return Response(serializer.data)
 
 
 class Seller(APIView):
