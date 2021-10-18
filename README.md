@@ -40,28 +40,28 @@ The database is defined in python code using the Django ORM, in the file [models
 
 The API receives information and request from its endpoints, makes queries to the database, and return information in JSON format about the database objects.
 
-Endpoints for all the agents:
+**Endpoints for all the agents:**
 
 | Method | Route | Answer |
-| -- | -- | -- | -- |
-| GET | `/api/active/<str:user_type>` | See the active requests waiting for solutions.
-| GET | `/api/done/<str:agent_id>` | See the solved requests.
-| POST | `/api/active/<str:agent_id>/action/<int:case_id>` | Register a new action on a case.
+| -- | -- | -- |
+| GET | `/api/active/<str:user_type>` | See the active requests waiting for solutions.|
+| GET | `/api/done/<str:agent_id>` | See the solved requests.|
+| POST | `/api/active/<str:agent_id>/action/<int:case_id>` | Register a new action on a case.|
 
-Endpoints for the Client Service Agent:
-
-| Method | Route | Answer |
-| -- | -- | -- | -- |
-| GET | `/api/create_new/` | Register a new case.
-| GET | `/api/all/active/<str:criteria>` | Record of not-solved processes. Ordered by some criteria: id, date, client, product.
-| GET | `/api/all/done/<str:criteria>` | Record of solved processes. Ordered by some criteria: id, date, client, product, next action.
-
-Endpoints for the Seller:
+**Endpoints for the Client Service Agent:** 
 
 | Method | Route | Answer |
-| -- | -- | -- | -- |
-| GET | `/api/seller/  int:id_seller>` | See a list of the warranty cases for products sold by them.
-|GET | `/api/specific_case/<int:id_case>` | See the full records about a specific case.
+| -- | -- | -- |
+| GET | `/api/create_new/` | Register a new case.|
+| GET | `/api/all/active/<str:criteria>` | Record of not-solved processes. Ordered by some criteria: id, date, client, product.|
+| GET | `/api/all/done/<str:criteria>` | Record of solved processes. Ordered by some criteria: id, date, client, product, next action.|
+
+**Endpoints for the Seller:**
+
+| Method | Route | Answer |
+| -- | -- | -- |
+| GET | `/api/seller/  int:id_seller>` | See a list of the warranty cases for products sold by them.|
+|GET | `/api/specific_case/<int:id_case>` | See the full records about a specific case.|
 
 ### The frontend
 
