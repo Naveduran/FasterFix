@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from api.models import Action, Agent, Customer, Product, Purchase, Request
 from api.methods import (create_customer, create_product, create_purchase,
-                         create_request)
+                         create_request, create_action)
 from api.serializers import (RequestSerializer, ActionSerializer,
                              AgentSerializer, PurchaseSerializer,
                              ProductSerializer, CustomerSerializer)
@@ -115,20 +115,20 @@ class NewCase(APIView):
         purchase = create_purchase(request.data)
         new_request = create_request(request.data, client, product, purchase)
         return Response({"route:": "/api/new_case",
-                         "product:":  str(new_request.product),
-                         "customer:": str(new_request.customer),
-                         "purchase:": str(new_request.purchase.id),
-                         "request:": str(new_request)})
+                         "product:":  new_request.product.data(),
+                         "customer:": new_request.customer.data(),
+                         "purchase:": new_request.purchase.data(),
+                         "request:": new_request.data()})
 
 
 class Act(APIView):
-    def get(self, request, pk_agent, pk_case, format=None):
-        return Response({"route:": "/api/specific_case/<id_case>",
-                         "agent:": pk_agent,
-                         "case:": pk_case})
+    def post(self, request, pk_agent, pk_case, format=None):
+        action = create_action(pk_agent, pk_case)
+        return Response({"Action:":action.data()})
 
 
 class Seller(APIView):
     def get(self, request, pk, format=None):
-        return Response({"route:": "/api/seller/<id_seller>",
-                         "seller:": pk})
+        purchases = Purchase.objects.filter(seller_id=pk)
+        serializer = PurchaseSerializer(purchases, many=True)
+        return Response(serializer.data)

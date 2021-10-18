@@ -46,3 +46,11 @@ def create_request(data, client, product, purchase):
     request.purchase = purchase
 
     return request
+
+def create_action(pk_agent, pk_case):
+    action = Action()
+
+    action.agent_id = pk_agent
+    action.request_id = pk_case
+
+    return action
