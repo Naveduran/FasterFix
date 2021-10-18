@@ -1,4 +1,3 @@
-
 # FasterFix
 
 FasterFix is a system for the management of the warranties for little and medium-sized companies, which have different work areas as accountability, client service, storage, logistics, and management.
@@ -23,7 +22,8 @@ This project is interpreted/tested on Ubuntu 14.04 LTS using:
 * Django 3.2.5
 * Node.js Alpine
 * MySQL Client 2.0.1
-For more detailed description, see the requirements for the [backend](/Api/requirements) and the [frontend](/Frontend/requirements.txt).
+
+For more detailed description, see the requirements for the [backend](/Api/requirements.txt) and the [frontend](/Frontend/requirements.txt).
 
 ## Functionalities
 
@@ -41,6 +41,7 @@ The database is defined in python code using the Django ORM, in the file [models
 The API receives information and request from its endpoints, makes queries to the database, and return information in JSON format about the database objects.
 
 Endpoints for all the agents:
+
 | Method | Route | Answer |
 | -- | -- | -- | -- |
 | GET | `/api/active/<str:user_type>` | See the active requests waiting for solutions.
@@ -48,6 +49,7 @@ Endpoints for all the agents:
 | POST | `/api/active/<str:agent_id>/action/<int:case_id>` | Register a new action on a case.
 
 Endpoints for the Client Service Agent:
+
 | Method | Route | Answer |
 | -- | -- | -- | -- |
 | GET | `/api/create_new/` | Register a new case.
@@ -55,6 +57,7 @@ Endpoints for the Client Service Agent:
 | GET | `/api/all/done/<str:criteria>` | Record of solved processes. Ordered by some criteria: id, date, client, product, next action.
 
 Endpoints for the Seller:
+
 | Method | Route | Answer |
 | -- | -- | -- | -- |
 | GET | `/api/seller/  int:id_seller>` | See a list of the warranty cases for products sold by them.
@@ -81,3 +84,4 @@ Manuel Bedoya [ [Github](https://github.com/ManuBedoya), [Twitter](https://twitt
 
 ## License
 Public Domain. No copy write protection.
+
