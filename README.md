@@ -78,9 +78,11 @@ The deployment of this project was done using RDS, and ECS from AWS, with the Gi
 No known bugs at this time.
 
 ## Authors
-Julieth Gonzalez [ [Github](https://github.com/jyuly12),  [Twitter](https://twitter.com/jyuly12) & [LinkedIn](https://www.linkedin.com/in/julieth-gonzalez-a36033208/) ]
-Natalia Vera [ [Github](https://github.com/Naveduran),  [Twitter](https://twitter.com/NaVeDuran1) & [LinkedIn](https://www.linkedin.com/in/naveduran/) ]
-Manuel Bedoya [ [Github](https://github.com/ManuBedoya), [Twitter](https://twitter.com/BedoyaManu98) & [LinkedIn](https://www.linkedin.com/in/manuel-fernando-bedoya-garcia-ba33971b5/) ]
+* Julieth Gonzalez [ [Github](https://github.com/jyuly12),  [Twitter](https://twitter.com/jyuly12) & [LinkedIn](https://www.linkedin.com/in/julieth-gonzalez-a36033208/) ]
+
+* Natalia Vera [ [Github](https://github.com/Naveduran),  [Twitter](https://twitter.com/NaVeDuran1) & [LinkedIn](https://www.linkedin.com/in/naveduran/) ]
+
+* Manuel Bedoya [ [Github](https://github.com/ManuBedoya), [Twitter](https://twitter.com/BedoyaManu98) & [LinkedIn](https://www.linkedin.com/in/manuel-fernando-bedoya-garcia-ba33971b5/) ]
 
 ## License
 Public Domain. No copy write protection.
