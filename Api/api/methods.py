@@ -45,4 +45,21 @@ def create_request(data, client, product, purchase):
     request.product = product
     request.purchase = purchase
 
+    action = create_action(6, request.id)
+
+    request.next = action.next
+
     return request
+
+def create_action(pk_agent, pk_case):
+    action = Action()
+
+    action.agent_id = pk_agent
+    action.request_id = pk_case
+    action.action = 1
+    action.next = 2
+
+    return action
+
+def update_action(pk_agent, data):
+    print(data)

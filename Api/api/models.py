@@ -72,6 +72,9 @@ class Agent(AbstractBaseUser, PermissionsMixin):
     permissions = []  # get them in api/utils, and set in the cruds
     objects = UserManager()
 
+    def data(self):
+        return {"user": self.user_type, "name": self.name, "email": self.email,
+                "username": self.username}
 
 class Product(models.Model):
     """An object that is selled by the company.
@@ -101,6 +104,9 @@ class Product(models.Model):
         return ("{} cm x {} cm x {} cm, {} kg".format(
             self.height, self.width, self.depth, self.weight))
 
+    def data(self):
+        return {"id": self.id, "name": self.name, "color": self.color,
+                "dimensions": self.dimensions()}
 
 class Customer(models.Model):
     """The person that buyed the product, or cames to register the request.
@@ -117,6 +123,9 @@ class Customer(models.Model):
     city = models.CharField(max_length=45)
     adress = models.CharField(max_length=100)
 
+    def data(self):
+        return {"id": self.id, "name": self.name, "phone": self.phone,
+                "email": self.email, "city": self.city, "address": self.adress}
 
 class Purchase(models.Model):
     """Information about the date when the customer buyed the product,
@@ -137,6 +146,9 @@ class Purchase(models.Model):
     seller = models.ForeignKey('Agent', on_delete=models.SET_DEFAULT,
                                default='', null=True,
                                limit_choices_to={'user_type': 'seller'})
+
+    def data(self):
+        return {"id": self.id, "note": self.note, "datetime": self.datetime}
 
 
 class Request(models.Model):
@@ -175,6 +187,9 @@ class Request(models.Model):
     purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE,
                                  related_name='requests')
 
+    def data(self):
+        return {"id": self.id, "motive": self.motive, "status": self.status,
+                "next": self.next}
 
 class Action(models.Model):
     """An agent adds actions to a request. The first action is the registration
@@ -201,3 +216,7 @@ class Action(models.Model):
     request = models.ForeignKey('Request', related_name='actions',
                                 on_delete=models.CASCADE)
     part = models.CharField(max_length=50, default='')
+
+    def data(self):
+        return {"id": self.id, "action": self.action, "note": self.note,
+                "next": self.next}
