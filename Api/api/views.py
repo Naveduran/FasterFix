@@ -10,11 +10,10 @@ from api.serializers import (RequestSerializer, ActionSerializer,
 
 class Active(APIView):
     """Return active requests"""
-
     def get(self, request, pk, format=None):
         """ Return all the requests that an agent
         can make according to its usertype.
-        Use: /api/active/<int:user_type>"""
+        Use: /api/active/<str:user_type>"""
         cases = Request.objects.filter(next=pk)
         serializer = RequestSerializer(cases, many=True)
         return Response(serializer.data)
@@ -22,7 +21,6 @@ class Active(APIView):
 
 class Done(APIView):
     """Return solved requests for a user"""
-
     def get(self, request, pk, format=None):
         """ Return all the requests that an agent have
         done according to its id.
