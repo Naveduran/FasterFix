@@ -1,5 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from api.utils import getPermissions
 from api.models import Action, Agent, Customer, Product, Purchase, Request
 from api.methods import (create_customer, create_product, create_purchase,
                          create_request, update_action)
@@ -10,11 +11,14 @@ from api.serializers import (RequestSerializer, ActionSerializer,
 
 class Active(APIView):
     """Return active requests"""
-    def get(self, request, pk, format=None):
+    def get(self, request, user_type, format=None):
         """ Return all the requests that an agent
         can make according to its usertype.
-        Use: /api/active/<str:user_type>"""
-        cases = Request.objects.filter(next=pk)
+        Use: /api/active/<str:user_type>
+        Example: /api/active/tech
+        """
+        actions_allowed = getPermissions(user_type)
+        cases = Request.objects.filter(next__in=allowed_actions)
         serializer = RequestSerializer(cases, many=True)
         return Response(serializer.data)
 
