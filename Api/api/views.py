@@ -84,7 +84,7 @@ class Case(APIView):
             return Response({pk: "Don't found"})
 
 
-class NewCase(APIView):
+ class NewCase(APIView):
     def post(self, request):
         """Method to create new case
 
@@ -97,6 +97,7 @@ class NewCase(APIView):
 
         bill_id:        Identification of the purchase (int)
         bill_date:      Date of the purchase
+        bill_note:      Note of the bill
 
         cst_dni:        DNI of the customer
         cst_name:       Name of the customer
@@ -111,11 +112,15 @@ class NewCase(APIView):
         weight:         Weight of the product
 
         motive:         Motive of the request
+        Note:           Note of the request
+
+        agent_id:       Identification of the agent
+        next_action:    next action of the request
         """
-        client = create_customer(request.data)
-        product = create_product(request.data)
-        purchase = create_purchase(request.data)
-        new_request = create_request(request.data, client, product, purchase)
+        #client = create_customer(request.data)
+        #product = create_product(request.data)
+        #purchase = create_purchase(request.data)
+        new_request = create_request(request.data, agent_id)
         return Response({"route:": "/api/new_case",
                          "product:":  new_request.product.data(),
                          "customer:": new_request.customer.data(),
