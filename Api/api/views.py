@@ -1,5 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from api.utils import getPermissions
 from api.models import Action, Agent, Customer, Product, Purchase, Request
 from api.methods import (create_customer, create_product, create_purchase,
                          create_request, update_action)
@@ -10,11 +11,14 @@ from api.serializers import (RequestSerializer, ActionSerializer,
 
 class Active(APIView):
     """Return active requests"""
-    def get(self, request, pk, format=None):
+    def get(self, request, user_type, format=None):
         """ Return all the requests that an agent
         can make according to its usertype.
-        Use: /api/active/<str:user_type>"""
-        cases = Request.objects.filter(next=pk)
+        Use: /api/active/<str:user_type>
+        Example: /api/active/tech
+        """
+        actions_allowed = getPermissions(user_type)
+        cases = Request.objects.filter(next__in=allowed_actions)
         serializer = RequestSerializer(cases, many=True)
         return Response(serializer.data)
 
@@ -80,7 +84,7 @@ class Case(APIView):
             return Response({pk: "Don't found"})
 
 
-class NewCase(APIView):
+ class NewCase(APIView):
     def post(self, request):
         """Method to create new case
 
@@ -93,6 +97,7 @@ class NewCase(APIView):
 
         bill_id:        Identification of the purchase (int)
         bill_date:      Date of the purchase
+        bill_note:      Note of the bill
 
         cst_dni:        DNI of the customer
         cst_name:       Name of the customer
@@ -107,11 +112,15 @@ class NewCase(APIView):
         weight:         Weight of the product
 
         motive:         Motive of the request
+        Note:           Note of the request
+
+        agent_id:       Identification of the agent
+        next_action:    next action of the request
         """
-        client = create_customer(request.data)
-        product = create_product(request.data)
-        purchase = create_purchase(request.data)
-        new_request = create_request(request.data, client, product, purchase)
+        #client = create_customer(request.data)
+        #product = create_product(request.data)
+        #purchase = create_purchase(request.data)
+        new_request = create_request(request.data, agent_id)
         return Response({"route:": "/api/new_case",
                          "product:":  new_request.product.data(),
                          "customer:": new_request.customer.data(),
