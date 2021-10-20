@@ -3,10 +3,11 @@ from rest_framework.response import Response
 from api.utils import getPermissions
 from api.models import Action, Agent, Customer, Product, Purchase, Request
 from api.methods import (create_customer, create_product, create_purchase,
-                         create_request, update_action)
+                         create_request)
 from api.serializers import (RequestSerializer, ActionSerializer,
                              AgentSerializer, PurchaseSerializer,
                              ProductSerializer, CustomerSerializer)
+from api import models
 
 
 class Active(APIView):
@@ -17,9 +18,12 @@ class Active(APIView):
         Use: /api/active/<str:user_type>
         Example: /api/active/tech
         """
-        actions_allowed = getPermissions(user_type)
+        allowed_actions = getPermissions(user_type)
         cases = Request.objects.filter(next__in=allowed_actions)
         serializer = RequestSerializer(cases, many=True)
+        value = serializer.data[0]['next']
+        serializer.data[0]['next'] = models.ACTION_CHOICES[value][1]
+
         return Response(serializer.data)
 
 
@@ -84,7 +88,7 @@ class Case(APIView):
             return Response({pk: "Don't found"})
 
 
- class NewCase(APIView):
+class NewCase(APIView):
     def post(self, request):
         """Method to create new case
 
