@@ -96,27 +96,27 @@ class NewCase(APIView):
 
         Args:
 
-        pr_reference:   Reference of the product (str)
-        pr_name:        Name of the product (str)
+        product_id:   Reference of the productoduct (str)
+        product_name:        Name of the product (str)
 
-        bill_id:        Identification of the purchase (int)
-        bill_date:      Date of the purchase
-        bill_note:      Note of the bill
+        purchase_id:        Identification of the purchase (int)
+        purchase_date:      Date of the purchase
+        purchase_note:      Note of the bill
 
-        cst_dni:        DNI of the customer
-        cst_name:       Name of the customer
-        cst_phone:      Phone of the customer
-        cst_email:      Email of the customer
-        cst_address:    Address of the customer
-        cst_location:   City or Department of the customer
+        customer_id:        DNI of the customer
+        customer_name:       Name of the customer
+        customer_phone:      Phone of the customer
+        customer_email:      Email of the customer
+        customer_address:    Address of the customer
+        customer_location:   City or Department of the customer
 
         height:         Height of the product
         width:          Width of the product
         deep:           Deep of the product
         weight:         Weight of the product
 
-        motive:         Motive of the request
-        Note:           Note of the request
+        request_motive: Motive of the request
+        action_note:    Note of the request
 
         agent_id:       Identification of the agent
         next_action:    next action of the request
@@ -124,7 +124,8 @@ class NewCase(APIView):
         #client = create_customer(request.data)
         #product = create_product(request.data)
         #purchase = create_purchase(request.data)
-        new_request = create_request(request.data, agent_id)
+        agent = Agent.objects.get(id=request.data['agent_id'])
+        new_request = create_request(request.data, agent)
         return Response({"route:": "/api/new_case",
                          "product:":  new_request.product.data(),
                          "customer:": new_request.customer.data(),
