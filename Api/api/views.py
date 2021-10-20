@@ -3,10 +3,11 @@ from rest_framework.response import Response
 from api.utils import getPermissions
 from api.models import Action, Agent, Customer, Product, Purchase, Request
 from api.methods import (create_customer, create_product, create_purchase,
-                         create_request, update_action)
+                         create_request)
 from api.serializers import (RequestSerializer, ActionSerializer,
                              AgentSerializer, PurchaseSerializer,
                              ProductSerializer, CustomerSerializer)
+from api import models
 
 
 class Active(APIView):
@@ -17,9 +18,12 @@ class Active(APIView):
         Use: /api/active/<str:user_type>
         Example: /api/active/tech
         """
-        actions_allowed = getPermissions(user_type)
+        allowed_actions = getPermissions(user_type)
         cases = Request.objects.filter(next__in=allowed_actions)
         serializer = RequestSerializer(cases, many=True)
+        value = serializer.data[0]['next']
+        serializer.data[0]['next'] = models.ACTION_CHOICES[value][1]
+
         return Response(serializer.data)
 
 
@@ -84,7 +88,7 @@ class Case(APIView):
             return Response({pk: "Don't found"})
 
 
- class NewCase(APIView):
+class NewCase(APIView):
     def post(self, request):
         """Method to create new case
 
@@ -92,27 +96,27 @@ class Case(APIView):
 
         Args:
 
-        pr_reference:   Reference of the product (str)
-        pr_name:        Name of the product (str)
+        product_id:   Reference of the productoduct (str)
+        product_name:        Name of the product (str)
 
-        bill_id:        Identification of the purchase (int)
-        bill_date:      Date of the purchase
-        bill_note:      Note of the bill
+        purchase_id:        Identification of the purchase (int)
+        purchase_date:      Date of the purchase
+        purchase_note:      Note of the bill
 
-        cst_dni:        DNI of the customer
-        cst_name:       Name of the customer
-        cst_phone:      Phone of the customer
-        cst_email:      Email of the customer
-        cst_address:    Address of the customer
-        cst_location:   City or Department of the customer
+        customer_id:        DNI of the customer
+        customer_name:       Name of the customer
+        customer_phone:      Phone of the customer
+        customer_email:      Email of the customer
+        customer_address:    Address of the customer
+        customer_location:   City or Department of the customer
 
         height:         Height of the product
         width:          Width of the product
         deep:           Deep of the product
         weight:         Weight of the product
 
-        motive:         Motive of the request
-        Note:           Note of the request
+        request_motive: Motive of the request
+        action_note:    Note of the request
 
         agent_id:       Identification of the agent
         next_action:    next action of the request
@@ -120,7 +124,8 @@ class Case(APIView):
         #client = create_customer(request.data)
         #product = create_product(request.data)
         #purchase = create_purchase(request.data)
-        new_request = create_request(request.data, agent_id)
+        agent = Agent.objects.get(id=request.data['agent_id'])
+        new_request = create_request(request.data, agent)
         return Response({"route:": "/api/new_case",
                          "product:":  new_request.product.data(),
                          "customer:": new_request.customer.data(),

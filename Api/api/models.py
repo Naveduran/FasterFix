@@ -68,7 +68,7 @@ class Agent(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     username = None  # overwritte basic model to omit this field
     USERNAME_FIELD = 'email'  # Using the email for authentication
-    REQUIRED_FIELDS = ['position']  # required to create the user
+    REQUIRED_FIELDS = ['user_type', 'password']  # required to create the user
     permissions = []  # get them in api/utils, and set in the cruds
     objects = UserManager()
 
