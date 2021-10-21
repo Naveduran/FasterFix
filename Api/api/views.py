@@ -108,7 +108,7 @@ class NewCase(APIView):
         customer_phone:      Phone of the customer
         customer_email:      Email of the customer
         customer_address:    Address of the customer
-        customer_location:   City or Department of the customer
+        customer_city:       City or Department of the customer
 
         height:         Height of the product
         width:          Width of the product
@@ -121,9 +121,6 @@ class NewCase(APIView):
         agent_id:       Identification of the agent
         next_action:    next action of the request
         """
-        #client = create_customer(request.data)
-        #product = create_product(request.data)
-        #purchase = create_purchase(request.data)
         agent = Agent.objects.get(id=request.data['agent_id'])
         new_request = create_request(request.data, agent)
         return Response({"route:": "/api/new_case",
