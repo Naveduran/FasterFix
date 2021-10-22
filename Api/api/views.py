@@ -1,13 +1,43 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import permissions, status
 from api.utils import getPermissions
 from api.models import Action, Agent, Customer, Product, Purchase, Request
-from api.methods import (create_customer, create_product, create_purchase,
+from api.methods import (create_customer,
+                         create_product,
+                         create_purchase,
                          create_request)
-from api.serializers import (RequestSerializer, ActionSerializer,
-                             AgentSerializer, PurchaseSerializer,
-                             ProductSerializer, CustomerSerializer)
+from api.serializers import (RequestSerializer,
+                             ActionSerializer,
+                             AgentSerializer,
+                             AgentSerializerWithToken,
+                             PurchaseSerializer,
+                             ProductSerializer,
+                             CustomerSerializer)
 from api import models
+
+
+@api_view(['GET'])
+def current_user(request):
+    """Determine the current user by their token, and return their data"""
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
+
+
+class AgentList(APIView):
+    """
+    Create a new user. It's called 'AgentList' because normally we'd have a get
+    method here too, for retrieving a list of all User objects.
+    """
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        serializer = AgentSerializerWithToken(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class Active(APIView):
