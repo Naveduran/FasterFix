@@ -66,6 +66,17 @@ MIDDLEWARE = [
 
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+
 ROOT_URLCONF = 'FasterFix.urls'
 
 TEMPLATES = [
@@ -154,3 +165,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Enable port to CORS in  the whitelist
 CORS_ORIGIN_WHITELIST = ('http://localhost:5000',
                          'http://localhost:3000', 'http://localhost:8000')
+
+JWT_AUTH = {
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'api.utils.my_jwt_response_handler'
+}
