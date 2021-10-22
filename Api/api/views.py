@@ -122,7 +122,8 @@ class NewCase(APIView):
         next_action:    next action of the request
         """
         agent = Agent.objects.get(id=request.data['agent_id'])
-        new_request = create_request(request.data, agent)
+        request.data['agent'] = agent
+        new_request = create_request(request.data)
         return Response({"route:": "/api/new_case",
                          "product:":  new_request.product.data(),
                          "customer:": new_request.customer.data(),

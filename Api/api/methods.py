@@ -53,7 +53,7 @@ def create_purchase(data):
     return purchase
 
 
-def create_request(data, agent):
+def create_request(data):
     """ Creation of the request that calls the creation of the purchase,
     product and customer and the first action to the request"""
     purchase = create_purchase(data)
@@ -68,47 +68,58 @@ def create_request(data, agent):
     request.note = data['action_note']
 
     note = 'Bill: {}'.format(purchase.id)
-    bought = create_action(1, 2, request, note, agent)
-    register = create_action(2, data['next_action'], request, request.note,
-                             agent)
+
+    bought = create_action({'current_action': 1,
+            'next_action': 2,
+            'request': request,
+            'note': note,
+            'agent': data['agent']})
+
+
+    register = create_action({'current_action': 2,
+                              'next_action': data['next_action'],
+                              'request': request,
+                              'note': request.note,
+                              'agent': agent})
 
     request.save()
     return request
 
 
-def create_action(current_action, next_action, request, note, agent):
+def create_action(data):
     """ Creation of the action that calls the update request to update
     the action in the request"""
     action = Action()
-    action.agent = agent
-    action.request = request
-    action.note = note
-    action.action = current_action
-    action.next = next_action
+    action.agent = data['agent']
+    action.request = data['request']
+    action.note = data['note']
+    action.action = data['current_action']
+    action.next = data['next_action']
 
-    update_request(request, action)
+    update_request({'request': data['request'],
+                    'action': action})
 
     action.save()
     return action
 
 
 
-def create_agent(name, email, user_type, password):
+def create_agent(data):
     """ Creation of the agent """
     agent = Agent()
 
-    agent.user_type = user_type
-    agent.name = name
-    agent.email = email
-    agent.password = password
+    agent.user_type = data['user_type']
+    agent.name = data['name']
+    agent.email = data['email']
+    agent.password = data['password']
 
     agent.save()
     return agent
 
 
-def update_request(request, action):
+def update_request(data):
     """ Updating the action of the request """
-    request.next = action.next
-    request.status = action.action
+    data['request'].next = data['action'].next
+    data['request'].status = data['action'].action
 
     request.save()
