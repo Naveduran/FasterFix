@@ -1,38 +1,82 @@
-import React from 'react';
+import React, { Component } from 'react';
+import LoginForm from '../components/LoginFormat';
 
-export default function Login() {
-  
-  return(
-    <div class="flex h-screen items-center bg-gray-100 justify-center">
-      <div class="w-auto h-auto bg-loginColor p-9 text-center shadow-2xl rounded-3xl">
-        <h1 class="m-3 text-5xl italic">
-            Faster Fix
-        </h1>
-        <p>
-            Warranties Manager System
-        </p>
-        <form>
-            <label class="flex gap-x-11 my-6">
-                <p>
-                    Email:
-                </p>
-                <input type="text" name="name" class="mx-2   border-2 rounded-lg" />
-            </label>
-            <label class="flex gap-x-3">
-                <p>
-                    Password
-                </p>
-                <input type="password" name="name" class="mx-2   border-2 rounded-lg" />
-            </label>
-            <div class="mt-7">
-                <button 
-                type="submit" 
-                class=" font-bold text-lg  bg-loginButton active:bg-colorBu py-1 px-4"
-                >Start
-                </button>
-            </div>
-        </form>
+class LoginPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      displayed_form: '',
+      logged_in: localStorage.getItem('token') ? true : false,
+      email: ''
+    };
+  }
+
+  componentDidMount() {
+    if (this.state.logged_in) {
+      fetch('http://localhost:8000/core/current_user/', {
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('token')}`
+        }
+      })
+        .then(res => res.json())
+        .then(json => {
+          this.setState({ email: json.email });
+        });
+    }
+  }
+
+  handle_login = (e, data) => {
+    e.preventDefault();
+    fetch('http://localhost:8000/token-auth/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(res => res.json())
+      .then(json => {
+        localStorage.setItem('token', json.token);
+        this.setState({
+          logged_in: true,
+          displayed_form: '',
+          email: json.user.email
+        });
+      });
+  };
+
+  handle_logout = () => {
+    localStorage.removeItem('token');
+    this.setState({ logged_in: false, email: '' });
+  };
+
+  display_form = form => {
+    this.setState({
+      displayed_form: form
+    });
+  };
+
+  render() {
+    let form;
+    switch (this.state.displayed_form) {
+      case 'login':
+        form = <LoginForm handle_login={this.handle_login} />;
+        break;
+      default:
+        form = null;
+    }
+
+    return (
+      <div >
+        {form}
+        <h3>
+          {this.state.logged_in
+            ? `Hello, ${this.state.email}`
+            : 'Please Log In'}
+        </h3>
       </div>
-    </div>
-  )
+    );
+  }
 }
+
+export default LoginPage;
