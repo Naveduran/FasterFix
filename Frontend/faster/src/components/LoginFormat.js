@@ -60,6 +60,6 @@ export default class LoginForm extends Component() {
         )
   }
 }
-Login.propTypes = {
+LoginForm.propTypes = {
     handle_login: PropTypes.func.isRequired
 };
