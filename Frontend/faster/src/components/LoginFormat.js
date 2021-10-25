@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-export default class LoginForm extends Component() {
+class LoginForm extends Component {
     state = {
         email: '',
         password: ''
@@ -60,6 +60,9 @@ export default class LoginForm extends Component() {
         )
   }
 }
+
+export default LoginForm;
+
 LoginForm.propTypes = {
     handle_login: PropTypes.func.isRequired
 };
