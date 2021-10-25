@@ -11,6 +11,16 @@ import {
   Route
 } from "react-router-dom";
 
+//new routes
+import Active from "../views/active";
+import Done from "../views/done";
+import AllActive from "../views/allActive";
+import AllDone from "../views/allDone";
+import Case from "../views/case";
+import Create from "../views/newCase";
+import Action from "../views/action";
+import Seller from "../views/seller";
+
 
 export default function AppRoutes() {
     return(
@@ -33,7 +43,15 @@ export default function AppRoutes() {
                 </Route>  
                 <Route path="/ActiveCSACases">
                     <CaseActive/>
-                </Route>  
+                </Route> 
+               <Route path="/active/:user_type" component="Active">
+               <Route path="/done/:agent_id" component="Done">
+               <Route path="/allActive/:criteria" component="AllActive">
+               <Route path="/allDone/:criteria" component="AllDone">
+               <Route path="/case/:request_id" component="Case">
+               <Route path="/create" component="Create">
+               <Route path="/active/:agent_id/:request_id" component="Action">
+               <Route path="/seller/:agent_id" component="Seller">
             </Switch>
         </Router>
     )
