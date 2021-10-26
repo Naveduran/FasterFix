@@ -1,8 +1,16 @@
 from django.urls import path
 from . import views
 from .views import current_user, AgentList
+from rest_framework_simplejwt import views as jwt_views
 
 urlpatterns = [
+
+    # To authentication
+    path('token/obtain/', jwt_views.TokenObtainPairView.as_view(),
+         name = 'token_create'),
+    path('token/refresh/', jwt_views.TokenRefreshView.as_view(),
+         name = 'token_refresh'),
+
     path('current_user/', current_user),
     path('users/', AgentList.as_view()),
     path('active/<str:user_type>', views.Active.as_view()),

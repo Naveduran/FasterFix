@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from os import getenv as env
 from pathlib import Path
-
+from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -36,8 +36,8 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['3.15.141.149']
-# ALLOWED_HOSTS = [ '*' ]
+#ALLOWED_HOSTS = ['3.15.141.149']
+ALLOWED_HOSTS = [ '*' ]
 
 # Application definition
 
@@ -71,10 +71,25 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+}
+
+SIMPLE_JWT = {
+
+    'ACCESS_TOKEN_LIFETIME' : timedelta(minutes= 5 ),
+    'REFRESH_TOKEN_LIFETIME' : timedelta(days= 14 ),
+    'ROTATE_REFRESH_TOKENS' : True,
+    'BLACKLIST_AFTER_ROTATION' : False,
+    'ALGORITHM' : 'HS256' ,
+    'SIGNING_KEY' : SECRET_KEY,
+    'VERIFYING_KEY' : None,
+    'AUTH_HEADER_TYPES' : ( 'JWT' ,),
+    'USER_ID_FIELD' : 'id' ,
+    'USER_ID_CLAIM' : 'user_id' ,
+    'AUTH_TOKEN_CLASSES' : ( 'rest_framework_simplejwt.tokens.AccessToken' ,),
+    'TOKEN_TYPE_CLAIM' : 'token_type' ,
+
 }
 
 ROOT_URLCONF = 'FasterFix.urls'
@@ -169,3 +184,4 @@ CORS_ORIGIN_WHITELIST = ('http://localhost:5000',
 JWT_AUTH = {
     'JWT_RESPONSE_PAYLOAD_HANDLER': 'api.utils.my_jwt_response_handler'
 }
+APPEND_SLASH=False
