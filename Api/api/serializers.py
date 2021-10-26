@@ -3,38 +3,12 @@ from rest_framework.response import Response
 from rest_framework import serializers
 
 
-class RequestSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Request
-        fields = '__all__'
-
-class ActionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Action
-        fields = '__all__'
-
-class CustomerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Customer
-        fields = '__all__'
-
-
-class PurchaseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Purchase
-        fields = '__all__'
-
-
-class ProductSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Product
-        fields = '__all__'
-
 class AgentSerializer(serializers.ModelSerializer):
     """Manage users data"""
     class Meta:
         model = Agent
         fields = '__all__'
+
 
 class AgentSerializerWithToken(serializers.ModelSerializer):
     """Manage new user registrations"""
@@ -60,3 +34,38 @@ class AgentSerializerWithToken(serializers.ModelSerializer):
     class Meta:
         model = Agent
         fields = ('token', 'email', 'password')
+
+
+class ActionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Action
+        fields = '__all__'
+
+
+class CustomerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customer
+        fields = '__all__'
+
+
+class PurchaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Purchase
+        fields = '__all__'
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = '__all__'
+
+
+class RequestSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
+    purchase = PurchaseSerializer()
+    customer = CustomerSerializer()
+    actions = ActionSerializer(many=True)
+
+    class Meta:
+        model = Request
+        fields = '__all__'

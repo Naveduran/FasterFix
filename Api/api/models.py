@@ -76,6 +76,7 @@ class Agent(AbstractBaseUser, PermissionsMixin):
         return {"user": self.user_type, "name": self.name, "email": self.email,
                 "username": self.username}
 
+
 class Product(models.Model):
     """An object that is selled by the company.
     Mandatory Fields:
@@ -108,6 +109,7 @@ class Product(models.Model):
         return {"id": self.id, "name": self.name, "color": self.color,
                 "dimensions": self.dimensions()}
 
+
 class Customer(models.Model):
     """The person that buyed the product, or cames to register the request.
     Mandatory Fields:
@@ -126,6 +128,7 @@ class Customer(models.Model):
     def data(self):
         return {"id": self.id, "name": self.name, "phone": self.phone,
                 "email": self.email, "city": self.city, "address": self.adress}
+
 
 class Purchase(models.Model):
     """Information about the date when the customer buyed the product,
@@ -191,6 +194,7 @@ class Request(models.Model):
     def data(self):
         return {"id": self.id, "motive": self.motive, "status": self.status,
                 "next": self.next}
+
 
 class Action(models.Model):
     """An agent adds actions to a request. The first action is the registration
