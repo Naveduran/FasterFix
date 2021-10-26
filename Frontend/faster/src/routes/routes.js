@@ -26,9 +26,6 @@ export default function AppRoutes() {
     return(
         <Router>
             <Switch>
-                <Route path="/" exact>
-                    <LoginPage/>
-                </Route>
                 <Route path="/autorize">
                     <Autorize/>
                 </Route>
@@ -44,14 +41,16 @@ export default function AppRoutes() {
                 <Route path="/ActiveCSACases">
                     <CaseActive/>
                 </Route> 
-               <Route path="/active/:user_type" component="Active">
-               <Route path="/done/:agent_id" component="Done">
-               <Route path="/allActive/:criteria" component="AllActive">
-               <Route path="/allDone/:criteria" component="AllDone">
-               <Route path="/case/:request_id" component="Case">
-               <Route path="/create" component="Create">
-               <Route path="/active/:agent_id/:request_id" component="Action">
-               <Route path="/seller/:agent_id" component="Seller">
+               <Route path="/login" component="LoginPage"><LoginPage/></Route> 
+               <Route path="/register" component=""/>
+               <Route path="/active/:user_type" component="Active"/>
+               <Route path="/done/:agent_id" component="Done"/>
+               <Route path="/allActive/:criteria" component="AllActive"/>
+               <Route path="/allDone/:criteria" component="AllDone"/>
+               <Route path="/case/:request_id" component="Case"/>
+               <Route path="/create" component="Create"/>
+               <Route path="/active/:agent_id/:request_id" component="Action"/>
+               <Route path="/seller/:agent_id" component="Seller"/>
             </Switch>
         </Router>
     )
