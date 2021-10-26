@@ -124,5 +124,5 @@ def update_request(request, data):
     """ Updating the action of the request """
     request.next = data['action_next']
     request.status = data['action_action']
-
+    
     request.save()

@@ -13,29 +13,29 @@ from uuid import uuid4
 ACTION_CHOICES = (
     # Initial actions
     (1, 'Bought'),
-    (2, 'Registered'),
+    (2, 'Register'),
     # Optional actions depending on the case
-    (3, 'PickedUp'),
-    (4, 'Stored'),
-    (5, 'Diagnosed'),
-    (6, 'Spares checked'),
-    (7, 'Changed Path'),
-    (8, 'Options given'),
-    (9, 'Authorized spares'),
-    (10, 'Authorized voucher / money back'),
-    (11, 'Authorized other solution'),
+    (3, 'PickUp'),
+    (4, 'Store'),
+    (5, 'Diagnose'),
+    (6, 'Availability'),
+    (7, 'Change Path'),
+    (8, 'Give Options'),
+    (9, 'Authorize Spares'),
+    (10, 'Authorize Voucher'),
+    (11, 'Authorize ...'),
     # Solutions
-    (12, 'Money given'),
-    (13, 'Voucher given'),
-    (14, 'Repaired'),
-    (15, 'Reference Changed'),
+    (12, 'Give Money'),
+    (13, 'Give Voucher'),
+    (14, 'Repair'),
+    (15, 'Change Reference'),
     # Pre-closing
-    (16, 'Letter written'),
-    (17, 'Packaged'),
-    (18, 'Delivered'),
-    (19, 'Warranty denied'),
+    (16, 'Write Letter'),
+    (17, 'Package'),
+    (18, 'Deliver'),
+    (19, 'Deny warranty'),
     # Closing
-    (20, 'Closed'),
+    (20, 'Close'),
 )
 
 USER_TYPE_CHOICES = (
@@ -79,6 +79,7 @@ class Agent(AbstractBaseUser, PermissionsMixin):
         return {"user": self.user_type, "name": self.name, "email": self.email,
                 "username": self.username}
 
+
 class Product(models.Model):
     """An object that is selled by the company.
     Mandatory Fields:
@@ -111,6 +112,7 @@ class Product(models.Model):
         return {"id": self.id, "name": self.name, "color": self.color,
                 "dimensions": self.dimensions()}
 
+
 class Customer(models.Model):
     """The person that buyed the product, or cames to register the request.
     Mandatory Fields:
@@ -129,6 +131,7 @@ class Customer(models.Model):
     def data(self):
         return {"id": self.id, "name": self.name, "phone": self.phone,
                 "email": self.email, "city": self.city, "address": self.adress}
+
 
 class Purchase(models.Model):
     """Information about the date when the customer buyed the product,
@@ -180,6 +183,7 @@ class Request(models.Model):
     status = models.PositiveSmallIntegerField(
         choices=ACTION_CHOICES, default=0)
     next = models.PositiveSmallIntegerField(choices=ACTION_CHOICES, default=0)
+    last_update = models.DateTimeField(auto_now=True)
 
     photos = models.CharField(max_length=200, default='')
     # link to an images storage service
@@ -193,6 +197,7 @@ class Request(models.Model):
     def data(self):
         return {"id": self.id, "motive": self.motive, "status": self.status,
                 "next": self.next}
+
 
 class Action(models.Model):
     """An agent adds actions to a request. The first action is the registration

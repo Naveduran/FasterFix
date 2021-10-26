@@ -57,8 +57,10 @@ class Active(APIView):
         cases = Request.objects.filter(next__in=allowed_actions)
         serializer = RequestSerializer(cases, many=True)
         value = serializer.data[0]['next']
-        serializer.data[0]['next'] = models.ACTION_CHOICES[value][1]
 
+        for i in range(len(serializer.data)):
+            serializer.data[i]['next'] = models.ACTION_CHOICES[value][1]
+            serializer.data[i]['status'] = models.ACTION_CHOICES[value][1]
         return Response(serializer.data)
 
 
@@ -69,10 +71,8 @@ class Done(APIView):
         done according to its id.
         Use: /api/done/<int:agent_id>"""
         cases = []
-        try:
-            agent = Agent.objects.get(id=pk)
-        except:
-            return Response({'agent_id': 'Not found'})
+        agent = Agent.objects.filter(id=pk).first()
+        return Response({'agent_id': 'Not found'})
         actions = Action.objects.filter(agent=agent).order_by('-datetime')
         for a in actions:
             cases.append(a.request)
@@ -116,7 +116,7 @@ product with + or - at the beginning to define descending or ascending order"""
 class Case(APIView):
     def get(self, request, pk, format=None):
         try:
-            case = Request.objects.get(id=pk)
+            case = Request.objects.filter(id=pk).first()
             serializer = RequestSerializer(case)
             return Response(serializer.data)
         except:
