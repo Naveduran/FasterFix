@@ -39,7 +39,7 @@ export default function AppRoutes() {
                 <Route path="/register"><Register/></Route>
                 <Route path="/create"><Create/></Route>
 
-                <Route path="/active/:user_type"><Active/></Route>
+                <Route path="/active"><Active/></Route>
                 <Route path="/done/:agent_id"><Done/></Route>
                 <Route path="/allActive/:criteria"> <AllActive/></Route>
                 <Route path="/allDone/:criteria"><AllDone/></Route>
