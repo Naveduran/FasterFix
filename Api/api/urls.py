@@ -1,12 +1,12 @@
 from django.urls import path
 from . import views
-from .views import current_user, AgentList
+from .views import current_user, AgentList, AgentCreate
 from rest_framework_simplejwt import views as jwt_views
 
 urlpatterns = [
 
     # To authentication
-    path('token/obtain/', jwt_views.TokenObtainPairView.as_view(),
+    path('token/obtain', jwt_views.TokenObtainPairView.as_view(),
          name = 'token_create'),
     path('token/refresh/', jwt_views.TokenRefreshView.as_view(),
          name = 'token_refresh'),
@@ -21,4 +21,6 @@ urlpatterns = [
     path('create_new', views.NewCase.as_view()),
     path('active/<int:pk_agent>/action/<pk_case>', views.Act.as_view()),
     path('seller/<int:pk>', views.Seller.as_view()),
+
+    path('create_agent', AgentCreate.as_view(), name = "create_agent")
 ]

@@ -66,9 +66,12 @@ class Agent(AbstractBaseUser, PermissionsMixin):
     user_type = models.CharField(max_length=7, choices=USER_TYPE_CHOICES)
     name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
-    username = None  # overwritte basic model to omit this field
+    username = models.CharField(max_length=50, default='')  # overwritte basic model to omit this field
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+
     USERNAME_FIELD = 'email'  # Using the email for authentication
-    REQUIRED_FIELDS = ['user_type', 'password']  # required to create the user
+    REQUIRED_FIELDS = ['username', 'password']  # required to create the user
     permissions = []  # get them in api/utils, and set in the cruds
     objects = UserManager()
 
