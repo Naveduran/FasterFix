@@ -2,13 +2,16 @@ import React from 'react';
 import axios from 'axios';
 import SimpleBottomNavigation from '../components/navigation'
 
+const url = `http://localhost:8000/api/active/`
+const user_type = `csa`
+
 export default class Active extends React.Component {
   state = {
     cases: []
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:8000/api/active/casher`)
+    axios.get(url + user_type)
       .then(res => {
         const cases = res.data;
         this.setState({ cases });
