@@ -113,8 +113,7 @@ def create_action(data):
 
     update_request(Request.objects.filter(id=data['request_id']).first(),
                    {'action_action': data['action_action'],
-                    'action_next': data['action_next']}
-    )
+                    'action_next': data['action_next']})
 
     action.save()
     return action
@@ -124,5 +123,5 @@ def update_request(request, data):
     """ Updating the action of the request """
     request.next = data['action_next']
     request.status = data['action_action']
-    
+
     request.save()

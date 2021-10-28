@@ -17,13 +17,7 @@ agent = ""
 se1 = create_agent({
     "agent_name": "Carlos Ruiz", "agent_email": "carlos.ruiz@empresa.com",
     "agent_user_type": "seller", "agent_password": "12345678aA"})
-
 agent += "seller id: {}\n".format(se1.id)
-
-se2 = create_agent({
-    "agent_name": "Ana Fernandez", "agent_email": "ana.fernandez@empresa.com",
-    "agent_user_type": "seller", "agent_password": "12345678aA"})
-agent += "seller2 id: {}\n".format(se2.id)
 
 storager = create_agent({
     "agent_name": "Pedro Torres",
@@ -78,8 +72,8 @@ agent += "client id: {}\n".format(client.id)
 with open('agents.txt', 'w+') as writer:
     writer.write(agent)
 
-# Fist case: registered, waiting availability
 
+# Fist case: registered, waiting availability
 re = create_request({
     "agent_id": csa.id,
     "product_id": 0000,
@@ -90,12 +84,10 @@ re = create_request({
     "purchase_id": 00000, "purchase_datetime": timezone.now(),
     "request_motive": "The car came without the right front wheel",
     "request_note": "Location: Client House",
-    "request_datetime": timezone.now(),
     "action_next": 6})
 
 
 # Second case: pickedup, waiting relocate
-
 re = create_request({
     "agent_id": csa.id,
     "product_id": 1, "product_name": "Red Car1", "product_color": "red",
@@ -105,21 +97,19 @@ re = create_request({
     "purchase_id": 1, "purchase_datetime": timezone.now(),
     "request_motive": "The car doesn't start even with 8 hours of charge",
     "request_note": "Location:Client House",
-    "request_datetime": timezone.now(),
     "action_next": 3})
 
 # Picked Up
 create_action({
     "request_id": re.id,
     "action_action": 3,
-    "agent_id": 4,
+    "agent_id": trans.id,
     "action_note": "Servientrega: 7890987675678",
     "action_datetime": timezone.now(),
     "action_next": 4})
 
 
 # Third case: Relocated wating for Diagnose
-
 re = create_request({
     "agent_id": csa.id,
     "product_id": "0002", "product_name": "Blue Car2", "product_color": "blue",
@@ -135,7 +125,7 @@ re = create_request({
 # Picked Up
 create_action({
     "request_id": re.id,
-    "action_action": 3, "agent_id": 4,
+    "action_action": 3, "agent_id": trans.id,
     "action_note": "Servientrega: 7890987675678",
     "action_datetime": timezone.now(),
     "action_next": 4})
@@ -143,14 +133,13 @@ create_action({
 # Save in storage
 create_action({
     "request_id": re.id,
-    "action_action": 4, "agent_id": 3,
+    "action_action": 4, "agent_id": storager.id,
     "action_note": "location: 3B54",
     "action_datetime": timezone.now(),
     "action_next": 5})
 
 
 # Fourth Case: Registered waiting for availability
-
 re = create_request({
     "agent_id": csa.id,
     "product_id": "3", "product_name": "Black Car3", "product_color": "black",
@@ -165,7 +154,6 @@ re = create_request({
 
 
 # Fifth Case: Repaired waiting for Review
-
 re = create_request({
     "agent_id": csa.id,
     "product_id": "4", "product_name": "Pink Car4", "product_color": "pink",
@@ -185,7 +173,7 @@ re = create_request({
 # Picked Up
 create_action({
     "request_id": re.id,
-    "action_action": 3, "agent_id": 4,
+    "action_action": 3, "agent_id": trans.id,
     "action_note": "Servientrega:7890987675678",
     "action_datetime": timezone.now(),
     "action_next": 4})
@@ -194,7 +182,7 @@ create_action({
 create_action({
     "request_id": re.id,
     "action_action": 4,
-    "agent_id": 3,
+    "agent_id": storager.id,
     "action_note": "located at:3B54",
     "action_datetime": timezone.now(),
     "action_next": 5})
@@ -202,14 +190,13 @@ create_action({
 # Diagnose & Repair
 create_action({
     "request_id": re.id,
-    "action_action": 5, "agent_id": 5,
+    "action_action": 5, "agent_id": tech.id,
     "action_note": "Repaired",
     "action_datetime": timezone.now(),
     "action_next": 8})
 
 
 # Sixth Case: Authorized waiting for Review
-
 re = create_request({
     "agent_id": csa.id,
     "product_id": "5", "product_name": "Baby Crib5", "product_color": "pink",
@@ -217,6 +204,7 @@ re = create_request({
     "customer_phone": "3005550000", "customer_email": "alejo@mail.com",
     "customer_city": "Bogota", "customer_adress": "Calle Falsa 555",
     "purchase_id": "05", "purchase_datetime": timezone.now(),
+    "purchase_seller": se1.id,
     "request_motive": "The crib came whitout the tubes that allow assembly.",
     "request_note": "Location: Service Station",
     "request_datetime": timezone.now(),
@@ -225,7 +213,7 @@ re = create_request({
 # Availability
 create_action({
     "request_id": re.id,
-    "action_action": 6, "agent_id": 7,
+    "action_action": 6, "agent_id": sparer.id,
     "action_note":
     "Discontinued. Parts not available to this reference, or similar.",
     "action_datetime": timezone.now(),
@@ -234,14 +222,12 @@ create_action({
 # Authorize
 create_action({
     "request_id": re.id,
-    "action_action": 10, "agent_id": 9,
+    "action_action": 10, "agent_id": man.id,
     "action_note": "Offer the redeemable voucher",
     "action_datetime": timezone.now(),
     "action_next": 8})
 
-
 # Sixth Case: Review waiting for voucher
-
 re = create_request({
     "agent_id": csa.id,
     "product_id": "6", "product_name": "Baby Crib6", "product_color": "pink",
@@ -249,6 +235,7 @@ re = create_request({
     "customer_phone": "36660000", "customer_email": "alejo@mail.com",
     "customer_city": "Bogota", "customer_adress": "Calle Falsa 666",
     "purchase_id": "06", "purchase_datetime": timezone.now(),
+    "purchase_seller": se1.id,
     "request_motive": "The crib came whitout tubes for assembly.",
     "request_note": "Location: Service Station",
     "request_datetime": timezone.now(),
@@ -257,7 +244,7 @@ re = create_request({
 # Availability
 create_action({
     "request_id": re.id,
-    "action_action": 6, "agent_id": 7,
+    "action_action": 6, "agent_id": sparer.id,
     "action_note":
     "Discontinued. Parts not available to this reference, or similar.",
     "action_datetime": timezone.now(),
@@ -266,7 +253,7 @@ create_action({
 # Authorize
 create_action({
     "request_id": re.id,
-    "action_action": 10, "agent_id": 9,
+    "action_action": 10, "agent_id": man.id,
     "action_note": "Offer the redeemable voucher to buy other crib",
     "action_datetime": timezone.now(),
     "action_next": 8})
@@ -274,13 +261,13 @@ create_action({
 # Communication
 create_action({
     "request_id": re.id,
-    "action_action": 8, "agent_id": 6,
+    "action_action": 8, "agent_id": csa.id,
     "action_note": "Client accepted a redeemable voucher as solution",
     "action_datetime": timezone.now(),
     "action_next": 13})
 
-# Seventh Case: Review waiting for voucher
 
+# Seventh Case: Review waiting for voucher
 re = create_request({
     "agent_id": csa.id,
     "product_id": "7", "product_name": "Baby Crib7", "product_color": "orange",
@@ -288,6 +275,7 @@ re = create_request({
     "customer_phone": "3007770000", "customer_email": "jaime@mail.com",
     "customer_city": "Bogota", "customer_adress": "Calle Falsa 777",
     "purchase_id": "07", "purchase_datetime": timezone.now(),
+    "purchase_seller": se1.id,
     "request_motive": "The crib came whitout tubes for assembly.",
     "request_note": "Location: Service Station",
     "request_datetime": timezone.now(),
@@ -296,7 +284,7 @@ re = create_request({
 # Availability
 create_action({
     "request_id": re.id,
-    "action_action": 6, "agent_id": 7,
+    "action_action": 6, "agent_id": sparer.id,
     "action_note":
     "The product is discontinued. Parts not available to this"
     "reference, or similar.",
@@ -306,7 +294,7 @@ create_action({
 # Authorize
 create_action({
     "request_id": re.id,
-    "action_action": 10, "agent_id": 9,
+    "action_action": 10, "agent_id": man.id,
     "action_note": "Offer the redeemable voucher to buy"
     "other crib, or other baby products",
     "action_datetime": timezone.now(),
@@ -315,14 +303,13 @@ create_action({
 # Communication
 create_action({
     "request_id": re.id,
-    "action_action": 8, "agent_id": 6,
+    "action_action": 8, "agent_id": csa.id,
     "action_note": "Client accepted a redeemable voucher as solution",
     "action_datetime": timezone.now(),
     "action_next": 13})
 
 
 # Eighth Case: Review waiting for moneyback
-
 re = create_request({
     "agent_id": csa.id,
     "product_id": "8", "product_name": "Baby Crib8", "product_color": "green",
@@ -338,7 +325,7 @@ re = create_request({
 # Availability
 create_action({
     "request_id": re.id,
-    "action_action": 6, "agent_id": 7,
+    "action_action": 6, "agent_id": sparer.id,
     "action_note":
     "The product is discontinued. Parts not available to this"
     "reference, or similar.",
@@ -348,7 +335,7 @@ create_action({
 # Authorize
 create_action({
     "request_id": re.id,
-    "action_action": 10, "agent_id": 9,
+    "action_action": 10, "agent_id": man.id,
     "action_note":
     "Offer the redeemable voucher to buy other crib, or other baby products",
     "action_datetime": timezone.now(),
@@ -357,14 +344,13 @@ create_action({
 # Communication
 create_action({
     "request_id": re.id,
-    "action_action": 8, "agent_id": 6,
+    "action_action": 8, "agent_id": csa.id,
     "action_note": "Client get another crib. They wish to have the money back",
     "action_datetime": timezone.now(),
     "action_next": 12})
 
 
 # Ninth Case: Voucher waiting for Review
-
 re = create_request({
     "agent_id": csa.id,
     "product_id": "9", "product_name": "Baby Crib9", "product_color": "blue",
@@ -380,7 +366,7 @@ re = create_request({
 # Availability
 create_action({
     "request_id": re.id,
-    "action_action": 6, "agent_id": 7,
+    "action_action": 6, "agent_id": sparer.id,
     "action_note":
     "The product is discontinued. Parts not available"
     " to this reference, or similar.",
@@ -390,7 +376,7 @@ create_action({
 # Authorize
 create_action({
     "request_id": re.id,
-    "action_action": 10, "agent_id": 9,
+    "action_action": 10, "agent_id": man.id,
     "action_note":
     "Offer the redeemable voucher to buy other crib, or other baby products",
     "action_datetime": timezone.now(),
@@ -399,7 +385,7 @@ create_action({
 # Communication
 create_action({
     "request_id": re.id,
-    "action_action": 8, "agent_id": 6,
+    "action_action": 8, "agent_id": csa.id,
     "action_note": "Client accepted a redeemable voucher as solution",
     "action_datetime": timezone.now(),
     "action_next": 13})
@@ -407,7 +393,7 @@ create_action({
 # Money back
 create_action({
     "request_id": re.id,
-    "action_action": 13, "agent_id": 8,
+    "action_action": 13, "agent_id": acc.id,
     "action_note": "Voucher999998775 for $350.000",
     "action_datetime": timezone.now(),
     "action_next": 8})
@@ -415,14 +401,13 @@ create_action({
 # Communication
 create_action({
     "request_id": re.id,
-    "action_action": 8, "agent_id": 6,
+    "action_action": 8, "agent_id": csa.id,
     "action_note": "Phone and email communication to give voucher",
     "action_datetime": timezone.now(),
     "action_next": 20})
 
 
 # Tenth Case: reviewed waiting for package
-
 re = create_request({
     "agent_id": csa.id,
     "product_id": "010", "product_name": "Baby Crib10",
@@ -431,6 +416,7 @@ re = create_request({
     "customer_phone": "31100000", "customer_email": "laura@mail.com",
     "customer_city": "Bogota", "customer_adress": "Calle Falsa 10",
     "purchase_id": "10", "purchase_datetime": timezone.now(),
+    "purchase_seller": se1.id,
     "request_motive": "The crib mechanism for baby sounds is damaged",
     "request_note": "Location: Service Station",
     "request_datetime": timezone.now(),
@@ -439,7 +425,7 @@ re = create_request({
 # PickUp
 create_action({
     "request_id": re.id,
-    "action_action": 3, "agent_id": 4,
+    "action_action": 3, "agent_id": trans.id,
     "action_note": "Servientrega:767453678",
     "action_datetime": timezone.now(),
     "action_next": 4})
@@ -447,7 +433,7 @@ create_action({
 # Save in storage
 create_action({
     "request_id": re.id,
-    "action_action": 4, "agent_id": 3,
+    "action_action": 4, "agent_id": storager.id,
     "action_note": "located at:3B54",
     "action_datetime": timezone.now(),
     "action_next": 5})
@@ -455,7 +441,7 @@ create_action({
 # Diagnose
 create_action({
     "request_id": re.id,
-    "action_action": 5, "agent_id": 5,
+    "action_action": 5, "agent_id": tech.id,
     "action_note": "Repaired",
     "action_datetime": timezone.now(),
     "action_next": 8})
@@ -463,13 +449,12 @@ create_action({
 # Communication
 create_action({
     "request_id": re.id,
-    "action_action": 8, "agent_id": 6,
+    "action_action": 8, "agent_id": csa.id,
     "action_note": "Repaired letter for shipping",
     "action_datetime": timezone.now(),
     "action_next": 17})
 
 # Eleventh Case: Delivered waiting for close.p
-
 re = create_request({
     "agent_id": csa.id,
     "product_id": "011", "product_name": "Baby Crib10",
@@ -478,6 +463,7 @@ re = create_request({
     "customer_phone": "31101100", "customer_email": "vicente@mail.com",
     "customer_city": "Bogota", "customer_adress": "Calle Falsa 11",
     "purchase_id": "11", "purchase_datetime": timezone.now(),
+    "purchase_seller": se1.id,
     "request_motive": "The crib mechanism for baby sounds is damaged",
     "request_note": "Location: Service Station",
     "request_datetime": timezone.now(),
@@ -486,7 +472,7 @@ re = create_request({
 # PickUp
 create_action({
     "request_id": re.id,
-    "action_action": 3, "agent_id": 4,
+    "action_action": 3, "agent_id": trans.id,
     "action_note": "Servientrega:1111453678",
     "action_datetime": timezone.now(),
     "action_next": 4})
@@ -494,7 +480,7 @@ create_action({
 # Storage
 create_action({
     "request_id": re.id,
-    "action_action": 4, "agent_id": 3,
+    "action_action": 4, "agent_id": storager.id,
     "action_note": "located at:3B54",
     "action_datetime": timezone.now(),
     "action_next": 5})
@@ -502,7 +488,7 @@ create_action({
 # Diagnose
 create_action({
     "request_id": re.id,
-    "action_action": 5, "agent_id": 6,
+    "action_action": 5, "agent_id": tech.id,
     "action_note": "Put a diagnose note here",
     "action_datetime": timezone.now(),
     "action_next": 8})
@@ -510,7 +496,7 @@ create_action({
 # Communication
 create_action({
     "request_id": re.id,
-    "action_action": 8, "agent_id": 6,
+    "action_action": 8, "agent_id": csa.id,
     "action_note": "Repaired letter for shipping. Adress confirmed.",
     "action_datetime": timezone.now(),
     "action_next": 17})
@@ -518,7 +504,7 @@ create_action({
 # Package
 create_action({
     "request_id": re.id,
-    "action_action": 17, "agent_id": 3,
+    "action_action": 17, "agent_id": storager.id,
     "action_note": "dimensions: 120 cm x 30cm x 30cm, 5kg",
     "action_datetime": timezone.now(),
     "action_next": 18})
@@ -526,7 +512,7 @@ create_action({
 # Delivery
 create_action({
     "request_id": re.id,
-    "action_action": 18, "agent_id": 4,
+    "action_action": 18, "agent_id": trans.id,
     "action_note": "Servientrega:128757674754",
     "action_datetime": timezone.now(),
     "action_next": 20})
