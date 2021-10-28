@@ -1,82 +1,83 @@
 import React, { Component } from 'react';
 import LoginForm from '../components/LoginFormat';
+import axios from 'axios';
+
 
 class LoginPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      displayed_form: '',
-      logged_in: localStorage.getItem('token') ? true : false,
-      email: ''
-    };
-  }
 
-  componentDidMount() {
-    if (this.state.logged_in) {
-      fetch('http://localhost:8000/core/current_user/', {
-        headers: {
-          Authorization: `JWT ${localStorage.getItem('token')}`
-        }
-      })
-        .then(res => res.json())
-        .then(json => {
-          this.setState({ email: json.email });
-        });
-    }
+  state = {
+    status: 1
   }
-
-  handle_login = (e, data) => {
-    e.preventDefault();
-    fetch('http://localhost:8000/token-auth/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
+    obtain = () => {
+    let email_login = document.getElementById('email_login').value
+    let password_login = document.getElementById('password_login').value
+    axios.post('http://localhost:8000/api/token/obtain', {
+      email: email_login,
+      password: password_login
     })
-      .then(res => res.json())
-      .then(json => {
-        localStorage.setItem('token', json.token);
-        this.setState({
-          logged_in: true,
-          displayed_form: '',
-          email: json.user.email
-        });
-      });
-  };
-
-  handle_logout = () => {
-    localStorage.removeItem('token');
-    this.setState({ logged_in: false, email: '' });
-  };
-
-  display_form = form => {
-    this.setState({
-      displayed_form: form
+    .then((response) => {
+      console.log(response.data);
+    }, (error) => {
+      alert('Icorrect email or password');
     });
-  };
 
-  render() {
-    let form;
-    switch (this.state.displayed_form) {
-      case 'login':
-        form = <LoginForm handle_login={this.handle_login} />;
-        break;
-      default:
-        form = null;
-    }
+    this.setState({ status: 0})
+  }
+  render(){
 
-    return (
-      <div >
-        {form}
-        <h3>
-          {this.state.logged_in
-            ? `Hello, ${this.state.email}`
-            : 'Please Log In'}
-        </h3>
-      </div>
-    );
+  
+  return (<div>
+    
+    {this.state.status ? <LoginForm obj={this.obtain}/> : <h1>No active</h1>}
+    
+    
+  </div>
+  );
   }
 }
-
 export default LoginPage;
+
+
+
+// ---------------------- OPTION 1 ---------------------------------------------///////
+/*
+import React, { Component } from 'react';
+import LoginForm from '../components/LoginFormat';
+import axios from 'axios';
+
+
+class LoginPage extends Component {
+
+  state = {
+    status: 1
+  }
+    obtain = () => {
+    let email_login = document.getElementById('email_login').value
+    let password_login = document.getElementById('password_login').value
+    axios.post('http://localhost:8000/api/token/obtain', {
+      email: email_login,
+      password: password_login
+    })
+    .then((response) => {
+      console.log(response);
+    }, (error) => {
+      alert('Icorrect email or password');
+    });
+
+    this.setState({ status: 0})
+  }
+  render(){
+
+  
+  return (<div>
+    
+    {this.state.status ? <LoginForm obj={this.obtain}/> : <h1>No active</h1>}
+    
+    
+  </div>
+  );
+  }
+}
+export default LoginPage;
+*/
+// ----------------------------------------------------------------------------------//
