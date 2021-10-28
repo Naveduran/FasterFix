@@ -13,15 +13,15 @@ import SellerView from "../views/sellerview";
 
 // API Integrated Routes
 import Landing from "../views/landing";
-import Register from "../views/register";
-import Active from "../views/active";
-import Done from "../views/done";
-import LoginPage from "../views/login";
-import AllActive from "../views/allActive";
-import AllDone from "../views/allDone";
-import Case from "../views/case";
-import Create from "../views/newCase";
-import Action from "../views/action";
+import Register from "../views/register"; //Manu
+import LoginPage from "../views/login"; // Manu
+import Active from "../views/active"; // Check
+import Done from "../views/done"; // Back
+import AllActive from "../views/allActive";// Back
+import AllDone from "../views/allDone"; // Back
+import Case from "../views/case"; 
+import Create from "../views/newCase"; 
+import Action from "../views/action"; // Back
 import Seller from "../views/seller";
 
 
@@ -39,13 +39,13 @@ export default function AppRoutes() {
                 <Route path="/register"><Register/></Route>
                 <Route path="/create"><Create/></Route>
 
-                <Route path="/active"><Active/></Route>
-                <Route path="/done/:agent_id"><Done/></Route>
-                <Route path="/allActive/:criteria"> <AllActive/></Route>
-                <Route path="/allDone/:criteria"><AllDone/></Route>
-                <Route path="/case/:request_id"><Case/></Route>
-                <Route path="/active/:agent_id/:request_id"><Action/></Route>
-                <Route path="/seller/:agent_id"><Seller/></Route>
+                <Route path="/active"><Active/></Route>  {/* user_type  CHECKED!*/}
+                <Route path="/done/"><Done/></Route> {/* agent_id  CHECKED!*/}
+                <Route path="/all/active/"> <AllActive/></Route> {/* criteria  CHECKED!*/}
+                <Route path="/all/done/"><AllDone/></Route> {/* criteria  CHECKED!*/}
+                <Route path="/case/"><Case/></Route> {/* request_id  */}
+                <Route path="/active/:agent_id/:request_id"><Action/></Route> {/* agent_id and requets_id */}
+                <Route path="/seller/"><Seller/></Route> {/* agent_id  */}
             </Switch>
         </Router>
     )

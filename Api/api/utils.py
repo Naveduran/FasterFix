@@ -1,6 +1,7 @@
 from .models import *
 from api.serializers import AgentSerializer
 
+
 def getPermissions(user_type):
     """ Get a list of numbers corresponding to the permissions
     of an Agent"""
@@ -18,6 +19,7 @@ def getPermissions(user_type):
     }
     if user_type in permissions.keys():
         return permissions[user_type]
+
 
 def my_jwt_response_handler(token, user=None, request=None):
     return {

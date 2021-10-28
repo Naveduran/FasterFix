@@ -7,6 +7,7 @@ from django.db.models.fields import DateTimeField, DateField
 from django.db.models.fields.related import ForeignKey
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin, UserManager
+from django.utils import timezone
 from uuid import uuid4
 
 
@@ -36,6 +37,7 @@ ACTION_CHOICES = (
     (19, 'Deny warranty'),
     # Closing
     (20, 'Close'),
+    (21, 'None')
 )
 
 USER_TYPE_CHOICES = (
@@ -66,7 +68,7 @@ class Agent(AbstractBaseUser, PermissionsMixin):
     user_type = models.CharField(max_length=7, choices=USER_TYPE_CHOICES)
     name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
-    username = models.CharField(max_length=50, default='')  # overwritte basic model to omit this field
+    username = models.CharField(max_length=50, default='')
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
@@ -145,7 +147,7 @@ class Purchase(models.Model):
     - If a seller is registered, the seller will be allowed to see
     detailed information about the process from it's view.
     """
-    id = models.PositiveSmallIntegerField(primary_key=True)
+    id = models.PositiveIntegerField(primary_key=True)
     datetime = models.DateTimeField()
 
     note = models.CharField(max_length=40, default='', blank=True)
@@ -174,10 +176,10 @@ class Request(models.Model):
     Customer.requests.all()
     Product.requests.all()
     """
-    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    id = models.AutoField(primary_key=True)
     motive = models.CharField(max_length=800)
 
-    datetime = models.DateTimeField(auto_now_add=True, editable=False)
+    datetime = models.DateTimeField(default=timezone.now, editable=False)
 
     # Updated on each action:
     status = models.PositiveSmallIntegerField(
@@ -216,7 +218,7 @@ class Action(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     action = models.PositiveSmallIntegerField(choices=ACTION_CHOICES)
     note = models.TextField(max_length=500)
-    datetime = models.DateTimeField(auto_now_add=True, editable=False)
+    datetime = models.DateTimeField(default=timezone.now, editable=False)
     next = models.PositiveSmallIntegerField(choices=ACTION_CHOICES)
 
     agent = models.ForeignKey('Agent', related_name='actions',

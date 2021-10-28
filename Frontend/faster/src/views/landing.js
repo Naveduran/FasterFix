@@ -3,7 +3,7 @@ export default function LandingPage(){
     return(
         <div class="w-screen h-screen p-2">
             <div class=" flex justify-end pt-2 pr-2">
-                <Link to="/Login">
+                <Link to="/login">
                 <button 
                     class="font-bold text-lg flex justify-end bg-loginButton active:bg-colorBu py-1 px-4"
                     >Login
@@ -40,7 +40,7 @@ export default function LandingPage(){
                     </div>
                 </div>
                 <div class="mt-5">
-                    <Link to="/Register">
+                    <Link to="/register">
                         <button 
                             class="font-bold text-lg flex justify-end bg-loginButton active:bg-colorBu py-1 px-4"
                             >Start Now

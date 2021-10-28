@@ -2,9 +2,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
+from rest_framework.exceptions import NotFound, NotAcceptable
 from api.utils import getPermissions
 from api.models import Action, Agent, Purchase, Request
-from api.methods import create_request
+from api.methods import create_request, create_action
 from api.serializers import (RequestSerializer,
                              ActionSerializer,
                              AgentSerializer,
@@ -23,27 +24,36 @@ class AgentCreate(APIView):
                 json = serializer.data
                 return Response(json, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-"""
-@api_view(['GET'])
-def current_user(request):
-    Determine the current user by their token, and return their data
-    serializer = UserSerializer(request.user)
-    return Response(serializer.data)
-"""
-"""
-class AgentList(APIView):
-    
-    Create a new user. It's called 'AgentList' because normally we'd have a get
-    method here too, for retrieving a list of all User objects.
-    
 
-    def post(self, request, format=None):
-        serializer = AgentSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-"""
+
+def RActionstoStr(data):
+    """transform action numbers into str"""
+    for request in data:
+        r_next = int(request['next']) - 1
+        r_status = int(request['status']) - 1
+        request['next'] = models.ACTION_CHOICES[r_next][1]
+        request['status'] = models.ACTION_CHOICES[r_status][1]
+    return data
+
+def ActiontoNumber(action):
+    """transform action strings into numbers"""
+    a_next = action['action_next']
+    a_action = action['action_action']
+    a_next_number = [numb for (numb, name) in models.ACTION_CHOICES if name == a_next]
+    a_action_number = [numb for (numb, name) in models.ACTION_CHOICES if name == a_action]
+    action['action_next'] = models.ACTION_CHOICES[a_next_number[0]][0]
+    action['action_action'] = models.ACTION_CHOICES[a_action_number[0]][0]
+    return action
+
+def ActionstoStr(actions):
+    """transform action numbers into str"""
+    for action in actions:
+        a_next = int(action['next']) - 1
+        a_action = int(action['action']) - 1
+        action['next'] = models.ACTION_CHOICES[a_next][1]
+        action['action'] = models.ACTION_CHOICES[a_action][1]
+    return actions
+
 
 class Active(APIView):
     """Return active requests"""
@@ -54,132 +64,160 @@ class Active(APIView):
         Example: /api/active/tech
         """
         allowed_actions = getPermissions(user_type)
+        if not allowed_actions:
+            raise NotFound("This user_type doesn't have permissions", 400)
         cases = Request.objects.filter(next__in=allowed_actions)
+        if not cases:
+            raise NotFound("Well done! Not cases to solve by this agent", 200)
         serializer = RequestSerializer(cases, many=True)
-        value = serializer.data[0]['next']
-
-        for i in range(len(serializer.data)):
-            serializer.data[i]['next'] = models.ACTION_CHOICES[value][1]
-            serializer.data[i]['status'] = models.ACTION_CHOICES[value][1]
-        return Response(serializer.data)
+        data = RActionstoStr(serializer.data)
+        return Response(data)
 
 
 class Done(APIView):
     """Return solved requests for a user"""
-    def get(self, request, pk, format=None):
+    def get(self, request, agent_id, format=None):
         """ Return all the requests that an agent have
-        done according to its id.
+        done, using its id.
         Use: /api/done/<int:agent_id>"""
         cases = []
-        agent = Agent.objects.filter(id=pk).first()
-        return Response({'agent_id': 'Not found'})
+        agent = Agent.objects.filter(id=agent_id).first()
+        if not agent:
+            raise NotFound("There is no agent registered with this id", 400)
         actions = Action.objects.filter(agent=agent).order_by('-datetime')
+        if not actions:
+            raise NotFound("There aren't actions made by this agent", 200)
         for a in actions:
-            cases.append(a.request)
-        serializer = RequestSerializer(cases, many=True)
-        return Response(serializer.data)
-
-
-class AllDone(APIView):
-    """Return all the requests solved"""
-
-    def get(self, request, order_criteria, format=None):
-        """Return all requests records, only for closed cases"""
-        error_str = """Incorrect parameter. Use: id, datetime, customer, or
-product with + or - at the beginning to define descending or ascending order"""
-        listt = ['-id', '+id', '-datetime', '+datetime', '-customer_id',
-                 '+customer_id', '-product_id', '+product_id']
-        if order_criteria not in listt:
-            return Response({'order_criteria': error_str})
-        cases = Request.objects.filter(status=20).order_by(order_criteria)
-        serializer = RequestSerializer(cases, many=True)
-        return Response(cases)
+            action = {
+                "action": a.action,
+                "next": a.next,
+                "datetime": a.datetime,
+                "product": a.request.product.name,
+                "request": a.request.id
+                }
+            cases.append(action)
+        data = ActionstoStr(cases)
+        return Response(data)
 
 
 class AllActive(APIView):
     """Return all the requests solved"""
-
-    def get(self, request, order_criteria, format=None):
-        """Return all requests records, only for closed cases"""
-        error_str = """Incorrect parameter. Use: id, datetime, customer, or
-product with + or - at the beginning to define descending or ascending order"""
-        listt = ['-id', '+id', '-datetime', '+datetime', '-customer_id',
-                 '+customer_id', '-product_id', '+product_id',
-                 '+next', '-next']
-        if order_criteria not in listt:
-            return Response({'order_criteria': error_str})
-        cases = Request.objects.exclude(status=20).order_by(order_criteria)
+    def get(self, request, criteria, format=None):
+        """Return all requests records, only for closed cases
+        Use: /api/all/active/<str:criteria"""
+        error_str = "Incorrect parameter. Use: id, datetime,"
+        "customer, product or next"
+        order_criteria = ['id', 'datetime', 'customer_id', 'product_id' 'next']
+        if criteria not in order_criteria:
+            return Response({criteria: error_str})
+        cases = Request.objects.exclude(status=20).order_by(criteria)
+        if not cases:
+            raise NotFound("There aren't active cases", 200)
         serializer = RequestSerializer(cases, many=True)
-        return Response(cases)
+        data = RActionstoStr(serializer.data)
+        return Response(data)
+
+
+class AllDone(APIView):
+    """Return all the requests solved"""
+    def get(self, request, criteria, format=None):
+        """Return all requests records, only for
+        closed cases.
+        Use: /api/all/done/<str:criteria>
+        """
+        error_str = "Incorrect parameter. Use: id, datetime, "
+        "customer, or product"
+        order_criteria = ['id', 'datetime', 'customer_id', 'product_id']
+        if criteria not in order_criteria:
+            return Response({criteria: error_str})
+        cases = Request.objects.filter(status=20).order_by(criteria)
+        if not cases:
+            raise NotFound("There aren't closed cases", 200)
+        serializer = RequestSerializer(cases, many=True)
+        data = RActionstoStr(serializer.data)
+        return Response(data)
 
 
 class Case(APIView):
-    def get(self, request, pk, format=None):
-        try:
-            case = Request.objects.filter(id=pk).first()
-            serializer = RequestSerializer(case)
-            return Response(serializer.data)
-        except:
-            return Response({pk: "Don't found"})
+    """Return information about a case"""
+    def get(self, request, request_id, format=None):
+        """ Return information of an specific unique request  using its id
+        Use: /api/case/<str:request_id>
+        """
+        case = Request.objects.filter(id=request_id).first()
+        if not case:
+            return Response({request_id: "There is no case with this id"})
+        serializer = RequestSerializer(case)
+        data = RActionstoStr([serializer.data])
+        return Response(data)
 
 
 class NewCase(APIView):
+    """ Register a new case in the database"""
     def post(self, request):
-        """Method to create new case
+        """Create a new Request.
+        * -> mandatory field
+        Arguments:
+        * agent_id:         Identification of the agent
 
-        first create Customer, Product and Purchase to create the case
+        * product_id:       Reference of the product (str)
+        * product_name:     Name of the product (str)
+        product_color:      Color pf the product
+        product_height:     Height of the product
+        product_width:      Width of the product
+        product_depth:      Depth of the product
+        product_weight:     Weight of the product
 
-        Args:
-
-        product_id:   Reference of the productoduct (str)
-        product_name:        Name of the product (str)
-
-        purchase_id:        Identification of the purchase (int)
-        purchase_date:      Date of the purchase
+        * purchase_id:      Bill number (int)
+        * purchase_date:    Date of the purchase
         purchase_note:      Note of the bill
 
-        customer_id:        DNI of the customer
-        customer_name:       Name of the customer
-        customer_phone:      Phone of the customer
-        customer_email:      Email of the customer
-        customer_address:    Address of the customer
-        customer_city:       City or Department of the customer
+        * customer_id:      DNI of the customer
+        * customer_name:    Name of the customer
+        * customer_phone:   Phone of the customer
+        * customer_email:   Email of the customer
+        * customer_address: Address of the customer
+        * customer_city:    City and Department of the customer
 
-        height:         Height of the product
-        width:          Width of the product
-        deep:           Deep of the product
-        weight:         Weight of the product
+        * request_motive:   Motive of the request
+        * action_note:      Note of the request
 
-        request_motive: Motive of the request
-        action_note:    Note of the request
-
-        agent_id:       Identification of the agent
-        next_action:    next action of the request
+        * action_next:      Next action of the request
+        Use: api/create_new_case/
+        and send the args as a dictionary inside the body of the request.
         """
-        agent = Agent.objects.get(id=request.data['agent_id'])
-        request.data['agent'] = agent
-        new_request = create_request(request.data)
-        return Response({"route:": "/api/new_case",
-                         "product:":  new_request.product.data(),
-                         "customer:": new_request.customer.data(),
-                         "purchase:": new_request.purchase.data(),
-                         "request:": new_request.data()})
+        case = create_request(request.data)
+        if not case:
+            raise NotAcceptable("The request wasn't created.")
+        serializer = RequestSerializer(case)
+        data = RActionstoStr(serializer.data)
+        return Response(data)
 
 
 class Act(APIView):
-    def get(self, request, pk_agent, pk_case, format=None):
-        action = Action.objects.get(agent_id=pk_agent, request_id=pk_case)
-        agent = Agent.objects.get(id=pk_agent)
-        action.agent_id = agent.id
-        action.note = "something"
-        action.next = action.next + 1
-        action.save()
+    """ Register a new action related to an agent and a request"""
+    def post(self, request, agent_id, request_id):
+        """ Register a new action related to an agent and a request
+        Use: api/active/<int:agent_id>/action/int:request_id>
+        Example: api/active/3/action/1
+        """
+        data = ActiontoNumber(request.data.copy())
+        data.update({"agent_id": agent_id, "request_id": request_id})
+        action = create_action(data)
         serializer = ActionSerializer(action)
-        return Response(serializer.data)
+        data = ActionstoStr([serializer.data])
+        return Response(data)
 
 
 class Seller(APIView):
-    def get(self, request, pk, format=None):
-        purchases = Purchase.objects.filter(seller_id=pk)
-        serializer = PurchaseSerializer(purchases, many=True)
+    """ Show all the request associated with a seller """
+    def get(self, request, agent_id, format=None):
+        """ """
+        cases = []
+        purchases = Purchase.objects.filter(seller_id=agent_id)
+        if not purchases:
+            return Response()
+        for purchase in purchases:
+            cases.append(purchase.request)
+        serializer = RequestSerializer(cases, many=True)
         return Response(serializer.data)

@@ -6,6 +6,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import AssignmentReturnedIcon from '@mui/icons-material/AssignmentReturned';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { Link } from 'react-router-dom';
 
 export default function SimpleBottomNavigation() {
   const [value, setValue] = React.useState(0);
@@ -19,10 +20,10 @@ export default function SimpleBottomNavigation() {
           setValue(newValue);
         }}
       >
-        <BottomNavigationAction label="Active" icon={<AssignmentIcon />} />
+        <BottomNavigationAction label="Active" icon={<AssignmentIcon />} href="/active"/>
         <BottomNavigationAction label="Solved" icon={<AssignmentTurnedInIcon />} />
         <BottomNavigationAction label="Update" icon={<AssignmentReturnedIcon />} />
-        <BottomNavigationAction label="LogOut" icon={<LogoutIcon />} />
+        <BottomNavigationAction label="LogOut" icon={<LogoutIcon />} href="/"/>
       </BottomNavigation>
     </Box>
   );
