@@ -178,7 +178,7 @@ class Request(models.Model):
     id = models.AutoField(primary_key=True)
     motive = models.CharField(max_length=800)
 
-    datetime = models.DateTimeField(default=timezone.now(), editable=False)
+    datetime = models.DateTimeField(default=timezone.now, editable=False)
 
     # Updated on each action:
     status = models.PositiveSmallIntegerField(
