@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import jwt from 'jwt-decode'
 import { Redirect } from 'react-router';
 import LoginForm from '../components/LoginFormat';
 import axios from 'axios';
@@ -18,8 +19,11 @@ class LoginPage extends Component {
       password: password_login
     })
     .then((response) => {
-      console.log(response.data.access);
-      window.location.href = `/active?token=${response.data.access}`;
+      console.log(jwt(response.data.access)['user_type']);
+      let token = response.data.access
+      let user_type = jwt(response.data.access)['user_type']
+      let agent_id = jwt(response.data.access)['agent_id']
+      window.location.href = `/active?user_type=${user_type}&agent_id=${agent_id}&token=${token}`;
     }, (error) => {
       alert('Icorrect email or password');
     });
