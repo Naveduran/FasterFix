@@ -15,13 +15,13 @@ import SellerView from "../views/sellerview";
 import Landing from "../views/landing";
 import Register from "../views/register"; //Manu
 import LoginPage from "../views/login"; // Manu
-import Active from "../views/active"; //-
-import Done from "../views/done"; // Nat
-import AllActive from "../views/allActive";// Nat
-import AllDone from "../views/allDone"; // Nat
-import Case from "../views/case";
-import Create from "../views/newCase";
-import Action from "../views/action";
+import Active from "../views/active"; // Check
+import Done from "../views/done"; // Back
+import AllActive from "../views/allActive";// Back
+import AllDone from "../views/allDone"; // Back
+import Case from "../views/case"; 
+import Create from "../views/newCase"; 
+import Action from "../views/action"; // Back
 import Seller from "../views/seller";
 
 

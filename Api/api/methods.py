@@ -1,6 +1,6 @@
 """Module with all methods of the app"""
 from api.models import Product, Customer, Purchase, Request, Agent, Action
-
+from django.utils import timezone
 
 def create_agent(data):
     """ Creation of the agent """
@@ -56,7 +56,7 @@ def create_purchase(data):
     purchase = Purchase()
 
     purchase.id = data['purchase_id']
-    purchase.datetime = data['purchase_datetime']
+    purchase.datetime = timezone.now()
     if 'purchase_note' in data:
         purchase.note = data['purchase_note']
     if 'seller' in data:

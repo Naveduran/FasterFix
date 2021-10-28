@@ -36,7 +36,8 @@ ACTION_CHOICES = (
     (18, 'Deliver'),
     (19, 'Deny warranty'),
     # Closing
-    (20, 'Close')
+    (20, 'Close'),
+    (21, 'None')
 )
 
 USER_TYPE_CHOICES = (
@@ -146,7 +147,7 @@ class Purchase(models.Model):
     - If a seller is registered, the seller will be allowed to see
     detailed information about the process from it's view.
     """
-    id = models.PositiveSmallIntegerField(primary_key=True)
+    id = models.PositiveIntegerField(primary_key=True)
     datetime = models.DateTimeField()
 
     note = models.CharField(max_length=40, default='', blank=True)
@@ -217,7 +218,7 @@ class Action(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     action = models.PositiveSmallIntegerField(choices=ACTION_CHOICES)
     note = models.TextField(max_length=500)
-    datetime = models.DateTimeField(auto_now_add=True, editable=False)
+    datetime = models.DateTimeField(default=timezone.now, editable=False)
     next = models.PositiveSmallIntegerField(choices=ACTION_CHOICES)
 
     agent = models.ForeignKey('Agent', related_name='actions',
