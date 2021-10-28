@@ -56,7 +56,7 @@ export default class AllActive extends React.Component {
                             <td className="px-6 py-4 whitespace-nowrap">
                               <button 
                               href="/active/:agent_id/:request_id:"
-                              class="rounded-lg px-2 bg-white border-double border-4 text-blue-600 border-blue-200">Change Path</button></td>
+                              class="rounded-lg px-2 bg-white border-4 text-blue-600 border-blue-200">Change Path</button></td>
                             </tr>)}
                       </table>
                 </div>
