@@ -1,4 +1,5 @@
 import * as React from 'react';
+import axios from 'axios'
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -6,9 +7,13 @@ import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 
+
+
 export default function Register() {
   const [role, setRole] = React.useState('Client Service Agent');
-  const handleChange = (event) => { setRole(event.target.value); };
+  const handleChange = (event) => { 
+    setRole(event.target.value);
+  };
   const roles = [
     { value: 'csa', label: 'Client Service Agent', },
     { value: 'sender', label: 'Logistics Coordinator', },
@@ -20,6 +25,22 @@ export default function Register() {
     { value: 'seller', label: 'Seller', },
   ];
   console.log("perrito")
+  const hello = () => {
+
+    const credentials = {
+      name: document.getElementById('name_register').value,
+      email: document.getElementById('email_register').value,
+      password: document.getElementById('password_register').value,
+      user_type: role
+    }
+    axios.post('http://localhost:8000/api/create_agent', credentials)
+    .then((response) => {
+      console.log(response.data);
+      alert('Register success')
+    }, (error) => {
+      alert('Icorrect email, password or type');
+    });
+  }
 
 	return (
     <div class="w-screen h-screen p-2">
@@ -29,20 +50,20 @@ export default function Register() {
     sx={{ '& .MuiTextField-root': { mx: "center", my: 2, width: '100%' } }}
     noValidate autoComplete="off">
       <div>
-        <TextField id="Name" label="Name" color="secondary"
-        variant="standard" />
+        <TextField id="name_register" label="Name" color="secondary" onChange={handleChange}
+        variant="standard" required/>
       </div>
       <div>
-        <TextField id="Email" label="Email" color="secondary"
-        variant="standard" />
+        <TextField id="email_register" label="Email" color="secondary" onChange={handleChange}
+        variant="standard" required/>
       </div>
       <div>
-        <TextField id="Password" label="Password" type="password"
+        <TextField id="password_register" label="Password" type="password" onChange={handleChange}
         autoComplete="current-password" color="secondary" variant="standard"
-        helperText="At least 8 uppercase and lowercase letters" />
+        helperText="At least 8 uppercase and lowercase letters" required/>
       </div>
       <div>
-        <TextField id="Role" select label="Position at the company" value={role}
+        <TextField id="Role_register" select label="Position at the company" value={role}
         onChange={handleChange} color="secondary" variant="standard">
           {roles.map((option) => (
             <MenuItem key={option.value} value={option.value}>
@@ -52,7 +73,7 @@ export default function Register() {
         </TextField>
       </div>
       <div class="flex flex-col space-y-1 items-center">
-        <Button variant="contained" endIcon={<SendIcon />}>Send</Button>
+        <Button variant="contained" endIcon={<SendIcon />} onClick={hello}>Send</Button>
       </div>
     </Box>
     </div></div></div>
