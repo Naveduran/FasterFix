@@ -1,7 +1,18 @@
 from api.models import Request, Action, Customer, Agent, Purchase, Product
 from rest_framework.response import Response
 from rest_framework import serializers
-
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+ 
+ 
+class MyTokenObtainPairSerializer ( TokenObtainPairSerializer ):
+ 
+    @ classmethod
+    def get_token ( cls , user ):
+        token  = super (MyTokenObtainPairSerializer, cls).get_token(user)
+ 
+        # Add custom claims
+        token[ 'user_type' ] = user.user_type
+        return token
 
 class AgentSerializer(serializers.ModelSerializer):
     """Manage users data"""
