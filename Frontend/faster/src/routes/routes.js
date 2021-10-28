@@ -29,23 +29,23 @@ export default function AppRoutes() {
     return (
         <Router>
             <Switch>
-                <Route path="/autorize"><Autorize/></Route>
-                <Route path="/detailed"><SellerView/></Route>
-                <Route path="/accountant"><AccountantView/></Route>
-                <Route path="/ActiveCSACases"><CaseActive/></Route>
+                <Route exact path="/autorize"><Autorize/></Route>
+                <Route exact path="/detailed"><SellerView/></Route>
+                <Route exact path="/accountant"><AccountantView/></Route>
+                <Route exact path="/ActiveCSACases"><CaseActive/></Route>
 
-                <Route path="/landing"><Landing/></Route>
-                <Route path="/login"><LoginPage/></Route>
-                <Route path="/register"><Register/></Route>
-                <Route path="/create"><Create/></Route>
+                <Route exact path="/"><Landing/></Route>
+                <Route exact path="/login"><LoginPage/></Route>
+                <Route exact path="/register"><Register/></Route>
+                <Route exact path="/create"><Create/></Route>
 
-                <Route path="/active"><Active/></Route>  {/* user_type  CHECKED!*/}
-                <Route path="/done/"><Done/></Route> {/* agent_id  CHECKED!*/}
-                <Route path="/all/active/"> <AllActive/></Route> {/* criteria  CHECKED!*/}
-                <Route path="/all/done/"><AllDone/></Route> {/* criteria  CHECKED!*/}
-                <Route path="/case/"><Case/></Route> {/* request_id  */}
-                <Route path="/active/:agent_id/:request_id"><Action/></Route> {/* agent_id and requets_id */}
-                <Route path="/seller/"><Seller/></Route> {/* agent_id  */}
+                <Route exact path="/active"><Active/></Route>  {/* user_type  CHECKED!*/}
+                <Route exact path="/done/"><Done/></Route> {/* agent_id  CHECKED!*/}
+                <Route exact path="/all/active/"> <AllActive/></Route> {/* criteria  CHECKED!*/}
+                <Route exact path="/all/done/"><AllDone/></Route> {/* criteria  CHECKED!*/}
+                <Route exact path="/case/"><Case/></Route> {/* request_id  */}
+                <Route exact path="/active/:agent_id/:request_id"><Action/></Route> {/* agent_id and requets_id */}
+                <Route exact path="/seller/"><Seller/></Route> {/* agent_id  */}
             </Switch>
         </Router>
     )
