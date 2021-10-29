@@ -8,7 +8,7 @@ let urlParams = new URLSearchParams(queryString);
 
 const url = `http://localhost:8000/api/active/`
 const user_type = urlParams.get('user_type')
-const token = urlParams.get('token');
+const token = `JWT ${urlParams.get('token')}`;
 
 console.log(user_type)
 export default class Active extends React.Component {
@@ -17,7 +17,7 @@ export default class Active extends React.Component {
   }
   
   componentDidMount() {
-    axios.get(url + user_type)
+    axios.get(url + user_type, { headers: {Authorization: token} })
       .then(res => {
         const cases = res.data;
         this.setState({ cases });
