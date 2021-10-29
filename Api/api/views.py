@@ -21,6 +21,9 @@ class ObtainTokenPairWithTypeView ( TokenObtainPairView ):
 
 class AgentCreate(APIView):
     """ View to create new agent """
+
+    permission_classes  = (permissions.AllowAny,)
+
     def post(self, request, format='json'):
         """ method post that create a new agent
         Args:
