@@ -24,8 +24,7 @@ export default function Register() {
     { value: 'casher', label: 'Accountant', },
     { value: 'seller', label: 'Seller', },
   ];
-  console.log("perrito")
-  const hello = () => {
+  const register = () => {
 
     const credentials = {
       name: document.getElementById('name_register').value,
@@ -37,6 +36,7 @@ export default function Register() {
     .then((response) => {
       console.log(response.data);
       alert('Register success')
+      window.location.href = `/login`;
     }, (error) => {
       alert('Icorrect email, password or type');
     });
@@ -73,7 +73,7 @@ export default function Register() {
         </TextField>
       </div>
       <div class="flex flex-col space-y-1 items-center">
-        <Button variant="contained" endIcon={<SendIcon />} onClick={hello}>Send</Button>
+        <Button variant="contained" endIcon={<SendIcon />} onClick={register}>Send</Button>
       </div>
     </Box>
     </div></div></div>
