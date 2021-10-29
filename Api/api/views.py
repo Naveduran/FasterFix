@@ -17,13 +17,17 @@ from .serializers import MyTokenObtainPairSerializer
 
 
 class ObtainTokenPairWithTypeView ( TokenObtainPairView ):
+    """ View to obtain the custom JWT token """
     permission_classes  = (permissions.AllowAny,)
     serializer_class = MyTokenObtainPairSerializer
 
 class AgentCreate(APIView):
-
+    """ View to create new agent """
     def post(self, request, format='json'):
-
+        """ method post that create a new agent
+        Args:
+        email, name, password, user_type
+        """
         serializer = AgentSerializer(data=request.data)
         if serializer.is_valid():
             agent = serializer.save()
