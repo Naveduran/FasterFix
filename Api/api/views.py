@@ -5,11 +5,9 @@ from rest_framework import status
 from rest_framework.exceptions import NotFound, NotAcceptable
 from api.utils import getPermissions
 from api.models import Action, Agent, Purchase, Request
-from api.methods import create_request, create_action
+from api.methods import create_request, create_action, create_agent
 from api.serializers import (RequestSerializer,
-                             ActionSerializer,
-                             AgentSerializer,
-                             PurchaseSerializer,)
+                             ActionSerializer,)
 from api import models
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import permissions
@@ -28,12 +26,10 @@ class AgentCreate(APIView):
         Args:
         email, name, password, user_type
         """
-        serializer = AgentSerializer(data=request.data)
-        if serializer.is_valid():
-            agent = serializer.save()
-            if agent:
-                json = serializer.data
-                return Response(json, status=status.HTTP_200_OK)
+        agent, serializer = create_agent(request.data)
+        if agent:
+            json = serializer.data
+            return Response(json, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

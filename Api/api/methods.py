@@ -1,18 +1,15 @@
 """Module with all methods of the app"""
 from api.models import Product, Customer, Purchase, Request, Agent, Action
+from api.serializers import AgentSerializer
 from django.utils import timezone
 
 def create_agent(data):
     """ Creation of the agent """
-    agent = Agent()
+    serializer = AgentSerializer(data=data)
+    if serializer.is_valid():
+            agent = serializer.save()
 
-    agent.user_type = data['agent_user_type']
-    agent.name = data['agent_name']
-    agent.email = data['agent_email']
-    agent.password = data['agent_password']
-
-    agent.save()
-    return agent
+    return agent, serializer
 
 
 def create_customer(data):
