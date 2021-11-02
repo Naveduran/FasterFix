@@ -1,3 +1,4 @@
+import React from 'react';
 const data1=[
     {name: 'Bought'}, {name: 'Registered'}, {name: 'Stored'},
     {name: 'Diagnosed'}, {name: 'Availability'}, {name: 'Options'}]
