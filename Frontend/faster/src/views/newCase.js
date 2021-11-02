@@ -45,7 +45,7 @@ export default function Create() {
         variant="standard" color="secondary" />
       </p>
       </div>
-      <div class="flex flex-col space-y-1 items-center">
+      <div className="flex flex-col space-y-1 items-center">
         <Button id="create_and_store" variant="contained" endIcon={<StoreIcon />}>Request Storaging</Button>
         <Button id="create_and_pickup" variant="contained" endIcon={<LibraryAddCheckIcon />}>Request PickUp</Button>
         <Button id="create_and_spares" variant="contained" endIcon={<CheckIcon />}>Request Spares</Button>

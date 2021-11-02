@@ -43,9 +43,9 @@ export default function Register() {
   }
 
 	return (
-    <div class="w-screen h-screen p-2">
-    <div class="flex flex-col space-y-1 items-center"> <h1>FASTER FIX</h1>
-    <div class="text-justify space-y-1 pt-9"> <h2>Register</h2>
+    <div className="w-screen h-screen p-2">
+    <div className="flex flex-col space-y-1 items-center"> <h1>FASTER FIX</h1>
+    <div className="text-justify space-y-1 pt-9"> <h2>Register</h2>
     <Box component="form"
     sx={{ '& .MuiTextField-root': { mx: "center", my: 2, width: '100%' } }}
     noValidate autoComplete="off">
@@ -72,7 +72,7 @@ export default function Register() {
           ))}
         </TextField>
       </div>
-      <div class="flex flex-col space-y-1 items-center">
+      <div className="flex flex-col space-y-1 items-center">
         <Button variant="contained" endIcon={<SendIcon />} onClick={register}>Send</Button>
       </div>
     </Box>

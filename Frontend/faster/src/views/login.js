@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import jwt from 'jwt-decode'
-import { Redirect } from 'react-router';
 import LoginForm from '../components/LoginFormat';
 import axios from 'axios';
 

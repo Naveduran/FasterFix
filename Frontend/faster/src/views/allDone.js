@@ -20,11 +20,11 @@ export default class AllDone extends React.Component {
 
   render() {
     return (
-      <div class="flex flex-col space-y-14 pt-14">
+      <div className="flex flex-col space-y-14 pt-14">
         <div>
           <SimpleBottomNavigation/>
         </div>
-        <div class="flex justify-center items-center ">
+        <div className="flex justify-center items-center ">
           <div className="flex flex-col">
             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div className="py-2 align-middle inline-block min-w-29 sm:px-6 lg:px-8">
@@ -57,7 +57,7 @@ export default class AllDone extends React.Component {
                             <td className="px-6 py-4 whitespace-nowrap">
                               <button 
                               href="/active/:agent_id/:request_id:"
-                              class="rounded-lg px-2 bg-white border-4 text-blue-600 border-blue-200">Detailed View</button></td>
+                              className="rounded-lg px-2 bg-white border-4 text-blue-600 border-blue-200">Detailed View</button></td>
                             </tr>)}
                       </table>
                 </div>
