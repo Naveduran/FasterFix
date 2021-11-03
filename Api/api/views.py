@@ -47,12 +47,14 @@ def RActionstoStr(data):
 
 def ActiontoNumber(action):
     """transform action strings into numbers"""
-    a_next = action['action_next']
     a_action = action['action_action']
-    a_next_number = [numb for (numb, name) in models.ACTION_CHOICES if name == a_next]
-    a_action_number = [numb for (numb, name) in models.ACTION_CHOICES if name == a_action]
-    action['action_next'] = models.ACTION_CHOICES[a_next_number[0]][0]
+    a_action_number = [numb - 1 for (numb, name) in models.ACTION_CHOICES if name == a_action]
     action['action_action'] = models.ACTION_CHOICES[a_action_number[0]][0]
+
+    a_next = action['action_next']
+    a_next_number = [numb - 1 for (numb, name) in models.ACTION_CHOICES if name == a_next]
+    action['action_next'] = models.ACTION_CHOICES[a_next_number[0]][0]
+
     return action
 
 def ActionstoStr(actions):
