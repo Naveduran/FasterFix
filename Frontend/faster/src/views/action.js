@@ -1,6 +1,5 @@
 import * as React from 'react';
 import axios from 'axios';
-import { changeToken, changeUserType} from '../views/landing';
 
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import Fab from '@mui/material/Fab';
@@ -12,16 +11,11 @@ import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 
 
-let queryString = window.location.search;
-let urlParams = new URLSearchParams(queryString);
-
 const request_id = 5;
 
-const user_type = urlParams.get('user_type');
-const token = `JWT ${urlParams.get('token')}`;
+const user_type= localStorage.getItem("user_type")
+const token = `JWT ${localStorage.getItem("token")}`
 
-changeUserType(user_type);
-changeToken(token)
 
 console.log(token)
 
@@ -31,7 +25,7 @@ export default class Action extends React.Component {
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:8000/api/case/` + request_id)
+    axios.get(`http://localhost:8000/api/case/` + request_id, { headers: { Authorization: token } })
       .then(res => {
         const cases = res.data;
         this.setState({ cases });
