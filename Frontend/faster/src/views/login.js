@@ -14,11 +14,14 @@ class LoginPage extends Component {
       password: password_login
     })
     .then((response) => {
-      console.log(jwt(response.data.access)['user_type']);
+      console.log(jwt(response.data.access));
       let token = response.data.access
       let user_type = jwt(response.data.access)['user_type']
-      let agent_id = jwt(response.data.access)['agent_id']
-      window.location.href = `/active?user_type=${user_type}&agent_id=${agent_id}&token=${token}`;
+      let agent_id = jwt(response.data.access)['user_id']
+      localStorage.setItem("token", token);
+      localStorage.setItem("agent_id", agent_id);
+      localStorage.setItem("user_type", user_type);
+      window.location.href = `/active`;
     }, (error) => {
       alert('Icorrect email or password');
       window.location.href = `/login`

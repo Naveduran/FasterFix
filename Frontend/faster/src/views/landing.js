@@ -1,26 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom"
 
-let tok = '';
-let userType = '';
-
-export const changeToken = (token) => {
-  tok = token;
-}
-
-export const changeUserType = (user_type) => {
-  userType = user_type;
-}
-
-export const getToken = () => {
-  return tok;
-}
-
-
-export const getUserType = () => {
-  return userType;
-}
-
 
 export default function LandingPage(){
     return(

@@ -1,20 +1,15 @@
 import React from 'react';
 import axios from 'axios';
 import SimpleBottomNavigation from '../components/navigation';
-import { changeToken, changeUserType} from '../views/landing';
 
-let queryString = window.location.search;
-let urlParams = new URLSearchParams(queryString);
 
 
 const url = `http://localhost:8000/api/active/`
-const user_type = urlParams.get('user_type')
-const token = `JWT ${urlParams.get('token')}`;
+const user_type = localStorage.getItem("user_type")
+const token = `JWT ${localStorage.getItem("token")}`;
 
-changeUserType(user_type);
-changeToken(token)
 
-console.log(token)
+console.log(`from localstorage: ${localStorage.getItem("token")}`)
 export default class Active extends React.Component {
   state = {
     cases: []
