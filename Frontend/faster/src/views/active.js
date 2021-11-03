@@ -45,10 +45,10 @@ export default class Active extends React.Component {
                       <tr>
                         <th 
                           scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Case(id)</th>
+                          className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Case</th>
                         <th
                         scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Product(name)</th>
+                        className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Product</th>
                         <th
                         scope="col"
                         className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Assigned on </th>
