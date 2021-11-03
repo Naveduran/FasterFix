@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import SimpleBottomNavigation from '../components/navigation';
+import { changeToken, changeUserType} from '../views/landing';
 
 let queryString = window.location.search;
 let urlParams = new URLSearchParams(queryString);
@@ -10,7 +11,10 @@ const url = `http://localhost:8000/api/active/`
 const user_type = urlParams.get('user_type')
 const token = `JWT ${urlParams.get('token')}`;
 
-console.log(user_type)
+changeUserType(user_type);
+changeToken(token)
+
+console.log(token)
 export default class Active extends React.Component {
   state = {
     cases: []

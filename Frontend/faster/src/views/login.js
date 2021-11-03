@@ -2,13 +2,9 @@ import React, { Component } from 'react';
 import jwt from 'jwt-decode'
 import LoginForm from '../components/LoginFormat';
 import axios from 'axios';
-
-
 class LoginPage extends Component {
-
   state = {
-    status: 1,
-    token: 'JWT '
+    status: 1
   }
     obtain = () => {
     let email_login = document.getElementById('email_login').value
@@ -27,7 +23,6 @@ class LoginPage extends Component {
       alert('Icorrect email or password');
       window.location.href = `/login`
     });
-
     this.setState({status: 0})
   }
   render(){

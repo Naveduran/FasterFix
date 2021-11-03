@@ -20,7 +20,7 @@ export default function SimpleBottomNavigation() {
         }}
       >
         <BottomNavigationAction label="Active" icon={<AssignmentIcon />} href="/active"/>
-        <BottomNavigationAction label="Solved" icon={<AssignmentTurnedInIcon />} href="/all/active/"/>
+        <BottomNavigationAction label="Solved" icon={<AssignmentTurnedInIcon />} href="/done"/>
         <BottomNavigationAction label="Update" icon={<AssignmentReturnedIcon />} />
         <BottomNavigationAction label="LogOut" icon={<LogoutIcon />} href="/"/>
       </BottomNavigation>
