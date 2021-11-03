@@ -34,7 +34,7 @@ export default class Done extends React.Component {
                     <tr>
                       <th>Case</th>
                       <th>Product</th>
-                      <th>Assigned</th>
+                      <th>Assigned on</th>
                       <th>Next</th>
                       <th></th>
                     </tr>
