@@ -44,7 +44,7 @@ export default function AppRoutes() {
                 <Route exact path="/all/active/"> <AllActive/></Route> {/* criteria  CHECKED!*/}
                 <Route exact path="/all/done/"><AllDone/></Route> {/* criteria  CHECKED!*/}
                 <Route exact path="/case/"><Case/></Route> {/* request_id  */}
-                <Route exact path="/active/:agent_id/:request_id"><Action/></Route> {/* agent_id and requets_id */}
+                <Route exact path="/action/"><Action/></Route> {/* agent_id and requets_id */}
                 <Route exact path="/seller/"><Seller/></Route> {/* agent_id  */}
             </Switch>
         </Router>
