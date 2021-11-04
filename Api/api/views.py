@@ -241,7 +241,7 @@ class Permissions(APIView):
         permissions_allowed = getPermissions(user_type)
         for index in range(len(permissions_allowed)):
             permissions_allowed[index] = models.ACTION_CHOICES[permissions_allowed[index] - 1][1]
-        return Response({"permisions": permissions_allowed})
+        return Response({"permissions": permissions_allowed})
 
 class Choices(APIView):
     def get(self, request, user_type, format=None):
