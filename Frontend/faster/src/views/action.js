@@ -9,7 +9,22 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
+import { Box } from '@mui/system';
+import Modal from '@mui/material/Modal';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 const request_id = 5;
 
@@ -21,18 +36,58 @@ console.log(token)
 
 export default class Action extends React.Component {
   state = {
-    cases: []
+    currentCase: null,
+    nextAction: '',
+    notes: '',
+    openPopUp: false,
+    permissions: ['Diagnose', 'Repair'], //
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:8000/api/case/` + request_id, { headers: { Authorization: token } })
-      .then(res => {
-        const cases = res.data;
-        this.setState({ cases });
-      })
+    this.getCase();
+    this.getUserPermissions();
   }
 
+  getUserPermissions() {
+    //   axios.get(`http://localhost:8000/api/permissions/` + request_id)
+    //    .then(res => {
+    //      const permissions = res.data;
+    //      this.setState({ ...this.state, permissions });
+    //    })
+      }
+
+      getCase() {
+        axios.get(`http://localhost:8000/api/case/` + request_id)
+          .then(res => {
+            const currentCase = res.data.pop();
+            this.setState({ ...this.state, currentCase });
+          })
+      }
+    
+      handleNextAction(event) {
+        const nextAction = event.target.value;
+        this.setState({ ...this.state, nextAction });
+      }
+    
+      handleNotes(event) {
+        const notes = event.target.value;
+        this.setState({ ...this.state, notes });
+      }
+    
+      createAction(event) {
+        const { currentCase, nextAction, notes } = this.state;
+        console.log(currentCase, nextAction, notes);
+        const openPopUp = true;
+        this.setState({ ...this.state, openPopUp });
+      }
+    
+      handleClose(event) {
+        const openPopUp = false;
+        this.setState({ ...this.state, openPopUp });
+      }
+    
   render() {
+    const { currentCase, nextAction, notes, openPopUp, permissions } = this.state;
     return (
       <div className="flex flex-col m-3">
         <div className="flex justify-end">
@@ -42,53 +97,53 @@ export default class Action extends React.Component {
         </div>    
       {this.state.cases.map(c =>
         <div>
-        <h1>{c.action_next}</h1>
+        <h2>{currentCase?.next}</h2>
         <div className="flex justify-center mx-auto gap-x-20 mt-12 gap-y-4">
           <div>
             <table className="divide-y divide-gray-2 space-y-4">
                 <p>Case</p>
                   <tr>
                     <td>Id</td>
-                    <td>{c.id}</td>
+                    <td>{currentCase?.id}</td>
                   </tr>
                 <p>Product</p>
                   <tr>
                     <td>Reference</td>
-                    <td>{c.product.id}</td>
+                    <td>{currentCase?.product?.id}</td>
                   </tr>
                   <tr>
                     <td>Name</td>
-                    <td>{c.product.name}</td>
+                    <td>{currentCase?.product?.name}</td>
                   </tr>
                 <p>Customer</p>
                   <tr>
                     <td>Name</td>
-                    <td>{c.customer.name}</td>
+                    <td>{currentCase?.customer?.name}</td>
                   </tr>
                   <tr>
                     <td>DNI</td>
-                    <td>{c.customer.id}</td>
+                    <td>{currentCase?.customer?.id}</td>
                   </tr>
                   <tr>
                     <td>Phone</td>
-                    <td>{c.customer.phone}</td>
+                    <td>{currentCase?.customer?.phone}</td>
                   </tr>
                   <tr>
                     <td>Adress</td>
-                    <td>{c.customer.adress}</td>
+                    <td>{currentCase?.customer?.adress}</td>
                   </tr>
                   <tr>
                     <td>City</td>
-                    <td>{c.customer.city}</td>
+                    <td>{currentCase?.customer?.city}</td>
                   </tr>
                 <p>Billing</p>
                   <tr>
                     <td>Bill</td>
-                    <td>{c.purchase.id}</td>
+                    <td>{currentCase?.purchase?.id}</td>
                   </tr>
                   <tr>
                     <td>Date</td>
-                    <td>{c.purchase.datetime}</td>
+                    <td>{currentCase?.purchase?.datetime}</td>
                   </tr>
               </table>
             </div>
@@ -109,17 +164,17 @@ export default class Action extends React.Component {
                       <th/>
                       <th/>
                     </tr>
-                    {c.actions.map(act =>
+                    {currentCase?.actions?.map(act =>
                       <tr>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
-                              <div className="text-sm text-black">{act.action}</div>
+                              <div className="text-sm text-black">{act?.action}</div>
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-black">{act.datetime}</div>
+                          <div className="text-sm text-black">{act?.datetime}</div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-black">{act.note}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-black">{act?.note}</td>
                       </tr>
                     )}
                     </table>
@@ -128,25 +183,47 @@ export default class Action extends React.Component {
               </div>
             </div>
         <div >
-          <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }} className="space-y-4">
-            <InputLabel id="demo-simple-select-standard-label">Next action</InputLabel>
-            <Select
-              id="next_action"
-              //value={next_action}
-              //onChange={handleNextChange}
-              label="NextAction">
-              <MenuItem value={10}>Get spare parts</MenuItem>
-              <MenuItem value={20}>Deny warranty</MenuItem>
-              <MenuItem value={30}>Send repaired product</MenuItem>
-            </Select>
-            <TextField id="action_note" label="Notes:" multiline rows={2} variant="standard"/>
-            <Button variant="contained">Done!</Button>
-          </FormControl>
+        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }} className="space-y-4">
+          <InputLabel id="demo-simple-select-standard-label">Next action</InputLabel>
+          <Select
+            id="next_action"
+            value={nextAction}
+            onChange={this.handleNextAction.bind(this)}
+            label="NextAction"
+          >
+            <MenuItem value={10}>Get spare parts</MenuItem>
+            <MenuItem value={20}>Deny warranty</MenuItem>
+            <MenuItem value={30}>Send repaired product</MenuItem>
+          </Select>
+          <TextField id="action_note" label="Notes:"
+          multiline rows={2} variant="standard"
+          value={notes}
+          onChange={this.handleNotes.bind(this)}
+          />
+          <Button variant="contained" onClick={this.createAction.bind(this)}>Done!</Button>
+        </FormControl>
         </div>
         </div>
         </div>
         </div>
       )}
+
+      <Modal
+        open={openPopUp}
+        onClose={this.handleClose.bind(this)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Text in a modal
+            { currentCase?.id } { nextAction } { notes }
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+          </Typography>
+        </Box>
+      </Modal>
     </div>
     )
   }
