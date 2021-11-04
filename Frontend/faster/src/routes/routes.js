@@ -6,7 +6,6 @@ import {
 } from "react-router-dom";
 
 // Static Routes
-import AccountantView from "../views/accountant";
 import Autorize from "../views/autorize";
 import CaseActive from "../views/clientservice/caseactive";
 import SellerView from "../views/sellerview";
@@ -31,7 +30,6 @@ export default function AppRoutes() {
             <Switch>
                 <Route exact path="/autorize"><Autorize/></Route>
                 <Route exact path="/detailed"><SellerView/></Route>
-                <Route exact path="/accountant"><AccountantView/></Route>
                 <Route exact path="/ActiveCSACases"><CaseActive/></Route>
 
                 <Route exact path="/" render={() => (window.location = "https://2886593.wixsite.com/fasterfix")} />
