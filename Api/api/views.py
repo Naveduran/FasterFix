@@ -159,8 +159,10 @@ class Case(APIView):
         if not case:
             return Response({request_id: "There is no case with this id"})
         serializer = RequestSerializer(case)
-        data = RActionstoStr([serializer.data])
-        return Response(data)
+        for index in range(len(serializer.data['actions'])):
+            serializer.data['actions'][index]['action'] = models.ACTION_CHOICES[serializer.data['actions'][index]['action'] - 1][1]
+            serializer.data['actions'][index]['next'] = models.ACTION_CHOICES[serializer.data['actions'][index]['next'] - 1][1]
+        return Response(serializer.data)
 
 
 class NewCase(APIView):
