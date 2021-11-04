@@ -2,7 +2,7 @@ import React from "react";
 import {
     BrowserRouter as Router,
     Switch,
-    Route
+    Route,
 } from "react-router-dom";
 
 // Static Routes
@@ -12,7 +12,7 @@ import CaseActive from "../views/clientservice/caseactive";
 import SellerView from "../views/sellerview";
 
 // API Integrated Routes
-import Landing from "../views/landing";
+//import Landing from "../views/landing";
 import Register from "../views/register"; //Manu
 import LoginPage from "../views/login"; // Manu
 import Active from "../views/active"; // Check
@@ -34,7 +34,7 @@ export default function AppRoutes() {
                 <Route exact path="/accountant"><AccountantView/></Route>
                 <Route exact path="/ActiveCSACases"><CaseActive/></Route>
 
-                <Route exact path="/"><Landing/></Route>
+                <Route exact path="/" render={() => (window.location = "https://2886593.wixsite.com/fasterfix")} />
                 <Route exact path="/login"><LoginPage/></Route>
                 <Route exact path="/register"><Register/></Route>
                 <Route exact path="/create"><Create/></Route>
