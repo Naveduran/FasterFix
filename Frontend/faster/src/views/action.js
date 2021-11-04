@@ -59,7 +59,7 @@ export default class Action extends React.Component {
 
   getCase() {
     axios.get(`http://localhost:8000/api/case/` + this.request_id, { headers: {Authorization: this.token} }).then((res) => {
-      const currentCase = res.data.pop();
+      const currentCase = res.data;
       this.setState({ ...this.state, currentCase });
     });
   }
@@ -97,7 +97,7 @@ export default class Action extends React.Component {
     const openPopUp = false;
     this.setState({ ...this.state, openPopUp });
   }
-
+  
   render() {
     const { currentCase, action, next, notes, openPopUp, permissions, choices } = this.state;
     console.log('permissions', [ ...permissions ]);
@@ -105,7 +105,7 @@ export default class Action extends React.Component {
       <div className="flex flex-col m-3 md:mx-5 lg:mx-7">
         
         <div className="flex justify-end">
-          <Fab color="primary" aria-label="add">
+          <Fab color="primary" aria-label="add" href="/active">
             <ArrowBackIosNewIcon />
           </Fab>
         </div>
@@ -116,57 +116,57 @@ export default class Action extends React.Component {
                 <p className="text-gray-600 font-bold py-1 lg:px-2">Case</p>
                   <tr className="py-1 px-2">
                     <td className="py-1 ml-1  font-normal text-gray-500 ">Id</td>
-                    <td className="py-1 ml-1 font-normal text-gray-500">{currentCase?.id}</td>
+                    <td className="py-1 ml-1 font-normal text-gray-500 text-center">{currentCase?.id}</td>
                   </tr>
                   <tr className="py-1">
                     <p className="text-gray-600 font-bold py-1">Product</p>
                   </tr>
                   <tr>
                     <td className="py-1 ml-1 font-normal text-gray-500">Reference</td>
-                    <td className="py-1 ml-1 font-normal text-gray-500">{currentCase?.product?.id}</td>
+                    <td className="py-1 ml-1 font-normal text-gray-500 text-center">{currentCase?.product?.id}</td>
                   </tr>
                   <tr>
                     <td className="py-1 ml-1  font-normal text-gray-500">Name</td>
-                    <td className="py-1 ml-1 font-normal text-gray-500">{currentCase?.product?.name}</td>
+                    <td className="py-1 ml-1 font-normal text-gray-500 text-center">{currentCase?.product?.name}</td>
                   </tr>
                   <tr className="py-1">
                     <p className="text-gray-600 font-bold py-1">Customer</p>
                   </tr>
                   <tr>
                     <td className="py-1 ml-1 font-normal text-gray-500">Name</td>
-                    <td className="py-1 ml-1 font-normal text-gray-500">{currentCase?.customer?.name}</td>
+                    <td className="py-1 ml-1 font-normal text-gray-500 text-center">{currentCase?.customer?.name}</td>
                   </tr>
                   <tr>
                     <td className="py-1 ml-1 font-normal text-gray-500">DNI</td>
-                    <td className="py-1 ml-1 font-normal text-gray-500">{currentCase?.customer?.id}</td>
+                    <td className="py-1 ml-1 font-normal text-gray-500 text-center">{currentCase?.customer?.id}</td>
                   </tr>
                   <tr>
                     <td className="py-1 ml-1 font-normal text-gray-500">Phone</td>
-                    <td className="py-1 ml-1 font-normal text-gray-500">{currentCase?.customer?.phone}</td>
+                    <td className="py-1 ml-1 font-normal text-gray-500 text-center">{currentCase?.customer?.phone}</td>
                   </tr>
                   <tr>
                     <td className="py-1 ml-1 font-normal text-gray-500">Adress</td>
-                    <td className="py-1 ml-1 font-normal text-gray-500">{currentCase?.customer?.adress}</td>
+                    <td className="py-1 ml-1 font-normal text-gray-500 text-center">{currentCase?.customer?.adress}</td>
                   </tr>
                   <tr>
                     <td className="py-1 ml-1 font-normal text-gray-500">City</td>
-                    <td className="py-1 ml-1 font-normal text-gray-500">{currentCase?.customer?.city}</td>
+                    <td className="py-1 ml-1 font-normal text-gray-500 text-center">{currentCase?.customer?.city}</td>
                   </tr>
                   <tr className="py-1">
                     <p className="text-gray-600 font-bold py-1">Billing</p>
                   </tr>
                   <tr>
                     <td className="py-1 ml-1 font-normal text-gray-500">Bill</td>
-                    <td className="py-1 ml-1 font-normal text-gray-500">{currentCase?.purchase?.id}</td>
+                    <td className="py-1 ml-1 font-normal text-gray-500 text-center">{currentCase?.purchase?.id}</td>
                   </tr>
                   <tr>
                     <td className="py-1 ml-1 font-normal text-gray-500">Date</td>
-                    <td className="py-1 ml-1 font-normal text-gray-500">{currentCase?.purchase?.datetime}</td>
+                    <td className="py-1 ml-1 font-normal text-gray-500 text-center">{currentCase?.purchase?.datetime}</td>
                   </tr>
               </table>
           </div>
           
-          <div className="justify-center items-center flex-col space-y-9 mx-auto md:w-1/2 lg:w-96 mt-5 md:mt-0 ">
+          <div className="justify-center items-center flex-col space-y-9 mx-auto md:w-auto lg:w-96 mt-5 md:mt-0 ">
             <div className="flex flex-col">
               <div className="-my-2  ">
                 <div className="">
