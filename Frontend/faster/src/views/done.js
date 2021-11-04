@@ -36,8 +36,8 @@ export default class Done extends React.Component {
                   <table className="min-w-full divide-y divide-gray-2">
                     <thead className="bg-blue-400"></thead>
                     <tr>
-                      <Tabletittle value="Case(id)"/>
-                      <Tabletittle value="Product(name)"/>
+                      <Tabletittle value="Case"/>
+                      <Tabletittle value="Product"/>
                       <Tabletittle value="Assigned on"/>
                       <Tabletittle value="Next"/>
                       <Tabletittle/>

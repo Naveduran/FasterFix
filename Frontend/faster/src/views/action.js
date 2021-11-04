@@ -102,185 +102,181 @@ export default class Action extends React.Component {
     const { currentCase, action, next, notes, openPopUp, permissions, choices } = this.state;
     console.log('permissions', [ ...permissions ]);
     return (
-      <div className="flex flex-col m-3">
+      <div className="flex flex-col m-3 md:mx-5 lg:mx-7">
+        
         <div className="flex justify-end">
           <Fab color="primary" aria-label="add">
             <ArrowBackIosNewIcon />
           </Fab>
         </div>
-        <div>
-          <h2>{currentCase?.next}</h2>
-          <div className="flex justify-center mx-auto gap-x-20 mt-12 gap-y-4">
-            <div>
-              <table className="divide-y divide-gray-2 space-y-4">
-                <p>Case</p>
-                <tr>
-                  <td>Id</td>
-                  <td>{currentCase?.id}</td>
-                </tr>
-                <p>Product</p>
-                <tr>
-                  <td>Reference</td>
-                  <td>{currentCase?.product?.id}</td>
-                </tr>
-                <tr>
-                  <td>Name</td>
-                  <td>{currentCase?.product?.name}</td>
-                </tr>
-                <p>Customer</p>
-                <tr>
-                  <td>Name</td>
-                  <td>{currentCase?.customer?.name}</td>
-                </tr>
-                <tr>
-                  <td>DNI</td>
-                  <td>{currentCase?.customer?.id}</td>
-                </tr>
-                <tr>
-                  <td>Phone</td>
-                  <td>{currentCase?.customer?.phone}</td>
-                </tr>
-                <tr>
-                  <td>Adress</td>
-                  <td>{currentCase?.customer?.adress}</td>
-                </tr>
-                <tr>
-                  <td>City</td>
-                  <td>{currentCase?.customer?.city}</td>
-                </tr>
-                <p>Billing</p>
-                <tr>
-                  <td>Bill</td>
-                  <td>{currentCase?.purchase?.id}</td>
-                </tr>
-                <tr>
-                  <td>Date</td>
-                  <td>{currentCase?.purchase?.datetime}</td>
-                </tr>
+        <h1>{currentCase?.next}</h1>
+        <div className="flex flex-col md:flex-row justify-center mx-auto gap-x-10 lg:gap-x-10 mt-12 gap-y-4">
+          <div className="shadow overflow-hidden border-b sm:rounded-lg">
+            <table className="divide-y divide-gray-3 mx-auto w-10/12 md:w-72">
+                <p className="text-gray-600 font-bold py-1 lg:px-2">Case</p>
+                  <tr className="py-1 px-2">
+                    <td className="py-1 ml-1  font-normal text-gray-500 ">Id</td>
+                    <td className="py-1 ml-1 font-normal text-gray-500">{currentCase?.id}</td>
+                  </tr>
+                  <tr className="py-1">
+                    <p className="text-gray-600 font-bold py-1">Product</p>
+                  </tr>
+                  <tr>
+                    <td className="py-1 ml-1 font-normal text-gray-500">Reference</td>
+                    <td className="py-1 ml-1 font-normal text-gray-500">{currentCase?.product?.id}</td>
+                  </tr>
+                  <tr>
+                    <td className="py-1 ml-1  font-normal text-gray-500">Name</td>
+                    <td className="py-1 ml-1 font-normal text-gray-500">{currentCase?.product?.name}</td>
+                  </tr>
+                  <tr className="py-1">
+                    <p className="text-gray-600 font-bold py-1">Customer</p>
+                  </tr>
+                  <tr>
+                    <td className="py-1 ml-1 font-normal text-gray-500">Name</td>
+                    <td className="py-1 ml-1 font-normal text-gray-500">{currentCase?.customer?.name}</td>
+                  </tr>
+                  <tr>
+                    <td className="py-1 ml-1 font-normal text-gray-500">DNI</td>
+                    <td className="py-1 ml-1 font-normal text-gray-500">{currentCase?.customer?.id}</td>
+                  </tr>
+                  <tr>
+                    <td className="py-1 ml-1 font-normal text-gray-500">Phone</td>
+                    <td className="py-1 ml-1 font-normal text-gray-500">{currentCase?.customer?.phone}</td>
+                  </tr>
+                  <tr>
+                    <td className="py-1 ml-1 font-normal text-gray-500">Adress</td>
+                    <td className="py-1 ml-1 font-normal text-gray-500">{currentCase?.customer?.adress}</td>
+                  </tr>
+                  <tr>
+                    <td className="py-1 ml-1 font-normal text-gray-500">City</td>
+                    <td className="py-1 ml-1 font-normal text-gray-500">{currentCase?.customer?.city}</td>
+                  </tr>
+                  <tr className="py-1">
+                    <p className="text-gray-600 font-bold py-1">Billing</p>
+                  </tr>
+                  <tr>
+                    <td className="py-1 ml-1 font-normal text-gray-500">Bill</td>
+                    <td className="py-1 ml-1 font-normal text-gray-500">{currentCase?.purchase?.id}</td>
+                  </tr>
+                  <tr>
+                    <td className="py-1 ml-1 font-normal text-gray-500">Date</td>
+                    <td className="py-1 ml-1 font-normal text-gray-500">{currentCase?.purchase?.datetime}</td>
+                  </tr>
               </table>
-            </div>
-            <div className="flex justify-center items-center flex-col space-y-9">
-              <div className="flex flex-col">
-                <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                  <div className="py-2 align-middle inline-block min-w-29 sm:px-6 lg:px-8">
-                    <div className="shadow overflow-hidden border-b border-red-200 sm:rounded-lg">
-                      <table className="min-w-full divide-y divide-gray-2">
-                        <thead className="bg-blue-400"></thead>
-                        <tr>
-                          <th
-                            scope="col"
-                            className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider"
-                          >
-                            History
-                          </th>
-                          <th />
-                          <th />
-                        </tr>
-                        {currentCase?.actions?.map((act, index) => (
-                          <tr key={index}>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="flex items-center">
-                                <div className="text-sm text-black">
-                                  {act?.action}
-                                </div>
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm text-black">
-                                {act?.datetime}
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-black">
-                              {act?.note}
-                            </td>
-                          </tr>
-                        ))}
-                      </table>
-                    </div>
+          </div>
+          
+          <div className="justify-center items-center flex-col space-y-9 mx-auto md:w-1/2 lg:w-96 mt-5 md:mt-0 ">
+            <div className="flex flex-col">
+              <div className="-my-2  ">
+                <div className="">
+                  <div className="shadow overflow-hidden border-b border-red-200 sm:rounded-lg">
+                    <table className="divide-y divide-gray-2 w-full ">
+                    <thead className="bg-blue-400"></thead>
+                    <tr>
+                      <th scope="col" className="px-6 py-3  lg:text-lg font-bold text-gray-700 uppercase tracking-wider text-center">
+                        History
+                      </th>
+                    </tr>
+                    {currentCase?.actions?.map((act, index) => (
+                        <tr key={index}>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                              <div className="text-gray-500 font-normal">{act?.action}</div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-gray-500">{act?.datetime}</div>
+                        </td>
+
+                        <td className="px-6 py-4 whitespace-nowrap text-gray-500">{act?.note}</td>
+                      </tr>
+                    ))}
+                    </table>
                   </div>
                 </div>
               </div>
-              <div>
-                <FormControl
-                  variant="standard"
-                  sx={{ m: 1, minWidth: 120 }}
-                  className="space-y-4"
-                >
-                  <InputLabel id="action-label">
-                    Mark as
-                  </InputLabel>
-                  <Select
-                    id="action"
-                    value={action}
-                    onChange={this.handleAction.bind(this)}
-                    labelId="action-label"
-                    label="Action"
-                  >
-                    {permissions.map((permission, index) => (
-                      <MenuItem key={index} value={index}>
-                        {permission}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <TextField
-                    id="action_note"
-                    label="Notes:"
-                    multiline
-                    rows={2}
-                    variant="standard"
-                    value={notes}
-                    onChange={this.handleNotes.bind(this)}
-                  />
-                  </FormControl>
-                  <FormControl
-                  variant="standard"
-                  sx={{ m: 1, minWidth: 120 }}
-                  className="space-y-4"
-                >
-                  <InputLabel id="next-label">
-                    Assign to
-                  </InputLabel>
-                  <Select
-                    id="next"
-                    value={next}
-                    onChange={this.handleNext.bind(this)}
-                    label="Next"
-                    labelId="next-label"
-                  >
-                    {choices.map((choice, index) => (
-                      <MenuItem key={index} value={index}>
-                        {choice}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <Button
-                    variant="contained"
-                    onClick={this.createAction.bind(this)}
-                  >
-                    Done!
-                  </Button>
-                </FormControl>
-              </div>
             </div>
+          <div className="flex flex-col space-y-4">
+            <FormControl
+              variant="standard"
+              sx={{ m: 1, minWidth: 120 }}
+              className="space-y-6">
+              <InputLabel id="action-label">
+                Mark as
+              </InputLabel>
+              <Select
+                id="action"
+                value={action}
+                onChange={this.handleAction.bind(this)}
+                labelId="action-label"
+                label="Action"
+                className="pt-2"
+              >
+              {permissions.map((permission, index) => (
+              <MenuItem key={index} value={index}>
+                {permission}
+                </MenuItem>
+              ))}
+              </Select>
+               <TextField
+                  id="action_note"
+                  label="Notes:"
+                  multiline
+                  rows={2}
+                  variant="standard"
+                  value={notes}
+                  onChange={this.handleNotes.bind(this)}
+                />
+            </FormControl>
+            <FormControl
+              variant="standard"
+              sx={{ m: 1, minWidth: 120 }}
+              className="space-y-6"
+            >
+              <InputLabel id="next-label">
+                Assign to
+              </InputLabel>
+              <Select
+                id="next"
+                value={next}
+                onChange={this.handleNext.bind(this)}
+                label="Next"
+                labelId="next-label"
+                className="py-2 "
+              >
+              {choices.map((choice, index) => (
+                <MenuItem key={index} value={index}>
+                  {choice}
+                </MenuItem>
+              ))}
+              </Select>
+              <Button
+                variant="contained"
+                onClick={this.createAction.bind(this)}
+              >
+              Done!
+              </Button>
+            </FormControl>    
+            <Modal
+              open={openPopUp}
+              onClose={this.handleClose.bind(this)}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  Success!
+                </Typography>
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                  The case have been saved in the database.
+                </Typography>
+              </Box>
+            </Modal>
           </div>
         </div>
-
-        <Modal
-          open={openPopUp}
-          onClose={this.handleClose.bind(this)}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              Success!
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            The case have been saved in the database.
-            </Typography>
-          </Box>
-        </Modal>
       </div>
-    );
+    </div>
+    )
   }
 }
