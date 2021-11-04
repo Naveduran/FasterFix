@@ -6,9 +6,9 @@ import { StyledEngineProvider } from '@mui/material/styles';
 
 ReactDOM.render(
   <React.StrictMode>
-	<StyledEngineProvider injectFirst>
-	  <AppRoutes/>
-    </StyledEngineProvider>
+	    <StyledEngineProvider injectFirst>
+	      <AppRoutes/>
+      </StyledEngineProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

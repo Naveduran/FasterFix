@@ -6,66 +6,68 @@ Requires to remove the database previously.
 from api.models import *
 from uuid import uuid4
 import os
-from api.methods import create_agent, create_request, create_action
+from api.methods import create_agent_test, create_request, create_action
 from django.utils import timezone
 import pytz
 
 agent = ""
 
 # Create Agents
-se1 = create_agent({
-    "agent_name": "Carlos Ruiz", "agent_email": "carlos.ruiz@empresa.com",
-    "agent_user_type": "seller", "agent_password": "12345678aA"})
+se1 = create_agent_test({
+    "name": "Carlos Ruiz", "email": "carlos.ruiz@empresa.com",
+    "user_type": "seller", "password": "12345678aA"})
+
+print(se1)
 agent += "seller id: {}\n".format(se1.id)
 
-storager = create_agent({
-    "agent_name": "Pedro Torres",
-    "agent_email": "francisco.sanchez@empresa.com",
-    "agent_user_type": "storer", "agent_password": "12345678aA"})
+storager = create_agent_test({
+    "name": "Pedro Torres",
+    "email": "francisco.sanchez@empresa.com",
+    "user_type": "storer", "password": "12345678aA"})
 agent += "storager id: {}\n".format(storager.id)
 
-trans = create_agent({
-    "agent_name": "Javier Martinez",
-    "agent_email": "javier.martinez@empresa.com",
-    "agent_user_type": "sender", "agent_password": "12345678aA"})
+trans = create_agent_test({
+    "name": "Javier Martinez",
+    "email": "javier.martinez@empresa.com",
+    "user_type": "sender", "password": "12345678aA"})
 agent += "trans id: {}\n".format(trans.id)
 
-tech = create_agent({
-    "agent_name": "Julián Valencia",
-    "agent_email": "julian.valencia@empresa.com",
-    "agent_user_type": "tech",
-    "agent_password": "12345678aA"})
+tech = create_agent_test({
+    "name": "Julián Valencia",
+    "email": "julian.valencia@empresa.com",
+    "user_type": "tech",
+    "password": "12345678aA"})
 agent += "tech id: {}\n".format(tech.id)
 
-csa = create_agent({
-    "agent_name": "Mónica Gutierrez",
-    "agent_email": "monica.gutierrez@empresa.com",
-    "agent_user_type": "csa", "agent_password": "12345678aA"})
+csa = create_agent_test({
+    "name": "Mónica Gutierrez",
+    "email": "monica.gutierrez@empresa.com",
+    "user_type": "csa", "password": "12345678aA"})
 agent += "csa id: {}\n".format(csa.id)
 
-sparer = create_agent({
-    "agent_name": "Andrés Mesa",
-    "agent_email": "andres.mesa@empresa.com",
-    "agent_user_type": "sparer", "agent_password": "12345678aA"})
+sparer = create_agent_test({
+    "name": "Andrés Mesa",
+    "email": "andres.mesa@empresa.com",
+    "user_type": "sparer", "password": "12345678aA"})
 agent += "sparer id: {}\n".format(sparer.id)
 
-acc = create_agent({
-    "agent_name": "Beatriz Pinzón",
-    "agent_email": "beatriz.pinzon@empresa.com",
-    "agent_user_type": "casher", "agent_password": "12345678aA"})
+acc = create_agent_test({
+    "name": "Beatriz Pinzón",
+    "email": "beatriz.pinzon@empresa.com",
+    "user_type": "casher", "password": "12345678aA"})
 agent += "acc id: {}\n".format(acc.id)
 
-man = create_agent({
-    "agent_name": "Armando Mendoza",
-    "agent_email": "armando.mendoza@empresa.com",
-    "agent_user_type": "author", "agent_password": "12345678aA"})
+man = create_agent_test({
+    "name": "Armando Mendoza",
+    "email": "armando.mendoza@empresa.com",
+    "user_type": "author", "password": "12345678aA"})
 agent += "man id: {}\n".format(man.id)
 
-client = create_agent({
-    "agent_name": "Client",
-    "agent_email": "mail@mail.com",
-    "agent_user_type": "client",
-    "agent_password": "12345678aA"})
+client = create_agent_test({
+    "name": "Client",
+    "email": "mail@mail.com",
+    "user_type": "client",
+    "password": "12345678aA"})
 agent += "client id: {}\n".format(client.id)
 
 with open('agents.txt', 'w+') as writer:
