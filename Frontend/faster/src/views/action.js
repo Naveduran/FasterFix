@@ -101,11 +101,13 @@ export default class Action extends React.Component {
   }
   
   render() {
+    
     const { currentCase, action, next, notes, openPopUp, permissions, choices } = this.state;
     if (currentCase === null ) {
         return <Box xs={{ display:'flex' }}><CircularProgress /></Box>
     }
     console.log(currentCase)
+   
     return (
       <div className="flex flex-col m-3 md:mx-5 lg:mx-7">
         
