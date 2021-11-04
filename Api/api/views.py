@@ -251,7 +251,7 @@ class Choices(APIView):
         choices = []
         if user_type == 'csa':
             for choice in models.ACTION_CHOICES:
-                if choice[1] != 'Bought':
+                if choice[1] != 'Bought' and choice[1] != 'Register' and choice[1] != 'Change Path':
                     choices.append(choice[1])
         elif user_type == 'sender':
             choices.extend(['Store', 'Close'])
