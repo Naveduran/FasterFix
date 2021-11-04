@@ -1,17 +1,17 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 function LoginForm(props) {
 
         return(
         <div className="flex h-screen items-center bg-gray-100 justify-center">
-            <div className="w-auto h-auto bg-loginColor p-9 text-center shadow-2xl rounded-3xl">
-            <h1 className="m-3 text-5xl italic">
+            <div className="w-auto h-auto bg-loginColor p-9 text-center space-y-10 md:w-5/12 md:shadow-2xl md:rounded-3xl">
+            <h1 className="m-3 text-5xl italic pb-6">
                 Faster Fix
             </h1>
             <p>
                 Warranties Manager System
             </p>
-            <form>
+            <form className="flex flex-col space-y-9 items-center justify-center">
                 <label htmlFor="email" className="flex gap-x-11 my-6">
                     <p>
                         Email:
@@ -42,7 +42,7 @@ function LoginForm(props) {
             </form>
             </div>
         </div>
-        )
+    )
 }
-
+LoginForm.propTypes={obj:PropTypes.func}
 export default LoginForm;
