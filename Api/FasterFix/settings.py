@@ -178,8 +178,7 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Enable port to CORS in  the whitelist
-CORS_ORIGIN_WHITELIST = ('http://localhost:5000',
-                         'http://localhost:3000', 'http://localhost:8000')
+CORS_ORIGIN_WHITELIST = ('http://localhost:3000', 'http://127.0.0.1:3000')
 
 JWT_AUTH = {
     'JWT_RESPONSE_PAYLOAD_HANDLER': 'api.utils.my_jwt_response_handler'
