@@ -122,3 +122,14 @@ def update_request(request, data):
     request.status = data['action_action']
 
     request.save()
+
+def create_agent_test(data):
+    agent = Agent()
+
+    agent.name = data['name']
+    agent.email = data['email']
+    agent.password = data['password']
+    agent.user_type = data['user_type']
+
+    agent.save()
+    return agent;
