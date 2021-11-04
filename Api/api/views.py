@@ -162,9 +162,6 @@ class Case(APIView):
         for index in range(len(serializer.data['actions'])):
             serializer.data['actions'][index]['action'] = models.ACTION_CHOICES[serializer.data['actions'][index]['action'] - 1][1]
             serializer.data['actions'][index]['next'] = models.ACTION_CHOICES[serializer.data['actions'][index]['next'] - 1][1]
-        print(models.ACTION_CHOICES[serializer.data['status'] - 1][1])
-        #serializer.data['status'] = models.ACTION_CHOICES[serializer.data['status'] - 1][1]
-        #serializer.data['next'] = models.ACTION_CHOICES[serializer.data['next'] - 1][1]
         data = RActionstoStr([serializer.data])
         return Response(data)
 
@@ -252,6 +249,19 @@ class Permissions(APIView):
 class Choices(APIView):
     def get(self, request, user_type, format=None):
         choices = []
-        for choice in models.ACTION_CHOICES:
-            choices.append(choice[1])
+        if user_type == 'csa':
+            for choice in models.ACTION_CHOICES:
+                if choice[1] != 'Bought':
+                    choices.append(choice[1])
+        elif user_type == 'sender':
+            choices.extend(['Store', 'Close'])
+        elif user_type == 'storer':
+            choices.append('Deliver')
+        if user_type == 'tech':
+            choices.extend(['Availability', 'Write Letter', 'Deny warranty'])
+        elif user_type == 'sparer':
+            choices.append('Authorize Spares')
+        elif user_type == 'author':
+            choices.extend(['Give Money', 'Give Voucher', 'Repair', 'Change Reference'])
+
         return Response({'choices': choices})
