@@ -28,7 +28,7 @@ const style = {
 
 const request_id = 5;
 
-const user_type= localStorage.getItem("user_type")
+//const user_type= localStorage.getItem("user_type")
 const token = `JWT ${localStorage.getItem("token")}`
 
 
@@ -87,7 +87,7 @@ export default class Action extends React.Component {
       }
     
   render() {
-    const { currentCase, nextAction, notes, openPopUp, permissions } = this.state;
+    const { currentCase, nextAction, notes, openPopUp } = this.state;
     return (
       <div className="flex flex-col m-3">
         <div className="flex justify-end">
@@ -95,7 +95,6 @@ export default class Action extends React.Component {
             <ArrowBackIosNewIcon />
           </Fab>
         </div>    
-      {this.state.cases.map(c =>
         <div>
         <h2>{currentCase?.next}</h2>
         <div className="flex justify-center mx-auto gap-x-20 mt-12 gap-y-4">
@@ -206,7 +205,6 @@ export default class Action extends React.Component {
         </div>
         </div>
         </div>
-      )}
 
       <Modal
         open={openPopUp}

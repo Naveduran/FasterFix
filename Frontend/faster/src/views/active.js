@@ -63,7 +63,7 @@ export default class Active extends React.Component {
                               <button 
                               onClick={() => this.nextAction(c.id)}
                               className="rounded-lg px-2 bg-white border-4 text-blue-600 border-blue-200">{c.next}</button></td>
-                            </tr>)}
+                          </tr>)}
                       </table>
                 </div>
               </div>
