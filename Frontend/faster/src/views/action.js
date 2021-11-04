@@ -168,7 +168,10 @@ export default class Action extends React.Component {
                   </tr>
                   <tr>
                     <td className="py-1 ml-1 font-normal text-gray-500">Date</td>
-                    <td className="py-1 ml-1 font-normal text-gray-500 text-center">{currentCase?.purchase?.datetime}</td>
+                    <td className="py-1 ml-1 font-normal text-gray-500 text-center">{new Date(currentCase?.purchase?.datetime).toLocaleDateString(
+                            "en-US",
+                            this.options
+                          )} </td>
                   </tr>
               </table>
           </div>
@@ -193,7 +196,10 @@ export default class Action extends React.Component {
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-gray-500">{act?.datetime}</div>
+                          <div className="text-gray-500">{new Date(act?.datetime).toLocaleDateString(
+                            "en-US",
+                            this.options
+                          )}</div>
                         </td>
 
                         <td className="px-6 py-4 whitespace-nowrap text-gray-500">{act?.note}</td>

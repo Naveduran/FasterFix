@@ -45,7 +45,10 @@ export default class Done extends React.Component {
                     {this.state.cases.map((c, index) => <tr key={index}>
                       <TableRow value={c.request}/>
                       <TableRow value={c.product}/>
-                      <TableRow value={c.datetime}/>
+                      <TableRow value={new Date(c.datetime).toLocaleDateString(
+                            "en-US",
+                            this.options
+                          )}/>
                       <TableRow value={c.next}/>
                       <td><button>Details</button></td></tr>)}
                   </table>
