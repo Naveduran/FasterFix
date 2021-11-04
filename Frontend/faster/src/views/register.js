@@ -43,39 +43,42 @@ export default function Register() {
   }
 
 	return (
-    <div className="w-screen h-screen p-2">
-    <div className="flex flex-col space-y-1 items-center"> <h1>FASTER FIX</h1>
-    <div className="text-justify space-y-1 pt-9"> <h2>Register</h2>
-    <Box component="form"
-    sx={{ '& .MuiTextField-root': { mx: "center", my: 2, width: '100%' } }}
-    noValidate autoComplete="off">
-      <div>
-        <TextField id="name_register" label="Name" color="secondary" onChange={handleChange}
-        variant="standard" required/>
+    <div className="w-screen h-screen pt-12 items-center justify-center bg-gray-100">
+    <div className="flex flex-col space-y-1 items-center"> 
+      <div className="text-justify space-y-9 pt-9"> 
+        <h2 className="text-4xl">Register</h2>
+      <Box component="form"
+      sx={{ '& .MuiTextField-root': { mx: "center", my: 2, width: '100%' } }}
+      noValidate autoComplete="off" className="space-y-4">
+        <div>
+          <TextField id="name_register" label="Name" color="secondary" onChange={handleChange}
+          variant="standard" required/>
+        </div>
+        <div>
+          <TextField id="email_register" label="Email" color="secondary" onChange={handleChange}
+          variant="standard" required/>
+        </div>
+        <div>
+          <TextField id="password_register" label="Password" type="password" onChange={handleChange}
+          autoComplete="current-password" color="secondary" variant="standard"
+          helperText="At least 8 uppercase and lowercase letters" required/>
+        </div>
+        <div>
+          <TextField id="Role_register" select label="Position at the company" value={role}
+          onChange={handleChange} color="secondary" variant="standard">
+            {roles.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </div>
+        <div className="flex flex-col space-y-1 items-center">
+          <Button variant="contained" endIcon={<SendIcon />} onClick={register}>Send</Button>
+        </div>
+      </Box>
       </div>
-      <div>
-        <TextField id="email_register" label="Email" color="secondary" onChange={handleChange}
-        variant="standard" required/>
-      </div>
-      <div>
-        <TextField id="password_register" label="Password" type="password" onChange={handleChange}
-        autoComplete="current-password" color="secondary" variant="standard"
-        helperText="At least 8 uppercase and lowercase letters" required/>
-      </div>
-      <div>
-        <TextField id="Role_register" select label="Position at the company" value={role}
-        onChange={handleChange} color="secondary" variant="standard">
-          {roles.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-      </div>
-      <div className="flex flex-col space-y-1 items-center">
-        <Button variant="contained" endIcon={<SendIcon />} onClick={register}>Send</Button>
-      </div>
-    </Box>
-    </div></div></div>
+    </div>
+    </div>
   );
 }
