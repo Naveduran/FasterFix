@@ -131,4 +131,5 @@ def create_agent_test(data):
     agent.password = data['password']
     agent.user_type = data['user_type']
 
+    agent.save()
     return agent;
