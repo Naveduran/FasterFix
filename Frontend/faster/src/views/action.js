@@ -1,5 +1,6 @@
 import * as React from "react";
 import axios from "axios";
+import { Redirect } from "react-router-dom";
 
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Fab from "@mui/material/Fab";
@@ -36,6 +37,7 @@ export default class Action extends React.Component {
     permissions: [],
     choices: [],
     next: "",
+    redirect: null
   };
 
   getLocalStorage() {
@@ -98,6 +100,7 @@ export default class Action extends React.Component {
   handleClose(event) {
     const openPopUp = false;
     this.setState({ ...this.state, openPopUp });
+    this.setState({ ...this.state,  redirect: "/done/"});
   }
   
   render() {
@@ -106,10 +109,12 @@ export default class Action extends React.Component {
     if (currentCase === null ) {
         return <Box xs={{ display:'flex' }}><CircularProgress /></Box>
     }
-    console.log(currentCase)
-   
+    if (this.state.redirect) {
+      return <Redirect to={this.state.redirect} />
+    }
+
     return (
-      <div className="flex flex-col m-3 md:mx-5 lg:mx-7">
+      <div className="flex flex-col md:mx-5 lg:mx-7">
         
         <div className="flex justify-end">
           <Fab color="primary" aria-label="add" href="/active">
@@ -117,7 +122,7 @@ export default class Action extends React.Component {
           </Fab>
         </div>
         <h1>{currentCase?.next}</h1>
-        <div className="flex flex-col md:flex-row justify-center mx-auto gap-x-10 lg:gap-x-10 mt-12 gap-y-4">
+        <div className="flex flex-col md:flex-row justify-center mx-auto lg:gap-x-10 lg:gap-x-10 mt-4">
           <div className="shadow overflow-hidden border-b sm:rounded-lg">
             <table className="divide-y divide-gray-3 mx-auto w-10/12 md:w-72">
                 <p className="text-gray-600 font-bold py-1 lg:px-2">Case</p>
@@ -129,11 +134,11 @@ export default class Action extends React.Component {
                     <p className="text-gray-600 font-bold py-1">Product</p>
                   </tr>
                   <tr>
-                    <td className="py-1 ml-1 font-normal text-gray-500">Reference</td>
-                    <td className="py-1 ml-1 font-normal text-gray-500 text-center">{currentCase?.product?.id}</td>
+                    <td className="py-1 ml-1 hidden font-normal text-gray-500">Reference</td>
+                    <td className="py-1 ml-1 hidden font-normal text-gray-500 text-center">{currentCase?.product?.id}</td>
                   </tr>
                   <tr>
-                    <td className="py-1 ml-1  font-normal text-gray-500">Name</td>
+                    <td className="py-1 ml-1 font-normal text-gray-500">Name</td>
                     <td className="py-1 ml-1 font-normal text-gray-500 text-center">{currentCase?.product?.name}</td>
                   </tr>
                   <tr className="py-1">
@@ -144,31 +149,31 @@ export default class Action extends React.Component {
                     <td className="py-1 ml-1 font-normal text-gray-500 text-center">{currentCase?.customer?.name}</td>
                   </tr>
                   <tr>
-                    <td className="py-1 ml-1 font-normal text-gray-500">DNI</td>
-                    <td className="py-1 ml-1 font-normal text-gray-500 text-center">{currentCase?.customer?.id}</td>
+                    <td className="py-1 ml-1 hidden font-normal text-gray-500">DNI</td>
+                    <td className="py-1 ml-1 hidden font-normal text-gray-500 text-center">{currentCase?.customer?.id}</td>
                   </tr>
                   <tr>
-                    <td className="py-1 ml-1 font-normal text-gray-500">Phone</td>
-                    <td className="py-1 ml-1 font-normal text-gray-500 text-center">{currentCase?.customer?.phone}</td>
+                    <td className="py-1 ml-1 hidden font-normal text-gray-500">Phone</td>
+                    <td className="py-1 ml-1 hidden font-normal text-gray-500 text-center">{currentCase?.customer?.phone}</td>
                   </tr>
                   <tr>
-                    <td className="py-1 ml-1 font-normal text-gray-500">Adress</td>
-                    <td className="py-1 ml-1 font-normal text-gray-500 text-center">{currentCase?.customer?.adress}</td>
+                    <td className="py-1 ml-1 hidden font-normal text-gray-500">Adress</td>
+                    <td className="py-1 ml-1 hidden font-normal text-gray-500 text-center">{currentCase?.customer?.adress}</td>
                   </tr>
                   <tr>
-                    <td className="py-1 ml-1 font-normal text-gray-500">City</td>
-                    <td className="py-1 ml-1 font-normal text-gray-500 text-center">{currentCase?.customer?.city}</td>
+                    <td className="py-1 ml-1 hidden font-normal text-gray-500">City</td>
+                    <td className="py-1 ml-1 hidden font-normal text-gray-500 text-center">{currentCase?.customer?.city}</td>
                   </tr>
                   <tr className="py-1">
-                    <p className="text-gray-600 font-bold py-1">Billing</p>
+                    <p className="text-gray-600 hidden font-bold py-1">Billing</p>
                   </tr>
                   <tr>
-                    <td className="py-1 ml-1 font-normal text-gray-500">Bill</td>
-                    <td className="py-1 ml-1 font-normal text-gray-500 text-center">{currentCase?.purchase?.id}</td>
+                    <td className="py-1 ml-1 hidden font-normal text-gray-500">Bill</td>
+                    <td className="py-1 ml-1 hidden font-normal text-gray-500 text-center">{currentCase?.purchase?.id}</td>
                   </tr>
                   <tr>
-                    <td className="py-1 ml-1 font-normal text-gray-500">Date</td>
-                    <td className="py-1 ml-1 font-normal text-gray-500 text-center">{new Date(currentCase?.purchase?.datetime).toLocaleDateString(
+                    <td className="py-1 ml-1 hidden font-normal text-gray-500">Date</td>
+                    <td className="py-1 ml-1 hidden font-normal text-gray-500 text-center">{new Date(currentCase?.purchase?.datetime).toLocaleDateString(
                             "en-US",
                             this.options
                           )} </td>
@@ -176,11 +181,11 @@ export default class Action extends React.Component {
               </table>
           </div>
           
-          <div className="justify-center items-center flex-col space-y-9 mx-auto md:w-auto lg:w-96 mt-5 md:mt-0 ">
+          <div className="justify-center items-center flex-col mx-auto md:w-auto lg:w-96 mt-5 md:mt-0 ">
             <div className="flex flex-col">
               <div className="-my-2  ">
                 <div className="">
-                  <div className="shadow overflow-hidden border-b border-red-200 sm:rounded-lg">
+                  <div className="shadow hidden overflow-hidden border-b border-red-200 sm:rounded-lg">
                     <table className="divide-y divide-gray-2 w-full ">
                     <thead className="bg-blue-400"></thead>
                     <tr>
