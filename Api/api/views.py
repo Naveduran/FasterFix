@@ -162,7 +162,11 @@ class Case(APIView):
         for index in range(len(serializer.data['actions'])):
             serializer.data['actions'][index]['action'] = models.ACTION_CHOICES[serializer.data['actions'][index]['action'] - 1][1]
             serializer.data['actions'][index]['next'] = models.ACTION_CHOICES[serializer.data['actions'][index]['next'] - 1][1]
-        return Response(serializer.data)
+        print(models.ACTION_CHOICES[serializer.data['status'] - 1][1])
+        #serializer.data['status'] = models.ACTION_CHOICES[serializer.data['status'] - 1][1]
+        #serializer.data['next'] = models.ACTION_CHOICES[serializer.data['next'] - 1][1]
+        data = RActionstoStr([serializer.data])
+        return Response(data)
 
 
 class NewCase(APIView):
