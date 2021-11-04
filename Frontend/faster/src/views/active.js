@@ -54,8 +54,8 @@ export default class Active extends React.Component {
                         <th scope="col"
                         className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"/>
                       </tr>
-                        { this.state.cases.map(c => 
-                          <tr>
+                        { this.state.cases.map((c, index)=> 
+                          <tr key={index}>
                             <td className="px-6 py-4 whitespace-nowrap">{c.id}</td>
                             <td className="px-6 py-4 whitespace-nowrap">{c.product.name}</td>
                             <td className="px-6 py-4 whitespace-nowrap">{c.last_update}</td>

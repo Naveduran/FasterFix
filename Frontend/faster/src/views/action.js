@@ -164,8 +164,8 @@ export default class Action extends React.Component {
                       <th/>
                       <th/>
                     </tr>
-                    {currentCase?.actions?.map(act =>
-                      <tr>
+                    {currentCase?.actions?.map((act, index) =>
+                      <tr key={index}>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
                               <div className="text-sm text-black">{act?.action}</div>
