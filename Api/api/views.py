@@ -66,17 +66,6 @@ def ActionstoStr(actions):
         action['action'] = models.ACTION_CHOICES[a_action][1]
     return actions
 
-
-class Permissions(APIView):
-    """ Return list of actions of an agent """
-    def get(self, request, user_type, format=None):
-        permissions_allowed = getPermissions(user_type)
-        for index in range(len(permissions_allowed)):
-            permissions_allowed[index] = models.ACTION_CHOICES[permissions_allowed[index] - 1][1]
-        return Response({"permisions": permissions_allowed})
-
-
-
 class Active(APIView):
     """Return active requests"""
     def get(self, request, user_type, format=None):
@@ -243,3 +232,20 @@ class Seller(APIView):
             cases.append(purchase.request)
         serializer = RequestSerializer(cases, many=True)
         return Response(serializer.data)
+
+
+
+class Permissions(APIView):
+    """ Return list of actions of an agent """
+    def get(self, request, user_type, format=None):
+        permissions_allowed = getPermissions(user_type)
+        for index in range(len(permissions_allowed)):
+            permissions_allowed[index] = models.ACTION_CHOICES[permissions_allowed[index] - 1][1]
+        return Response({"permisions": permissions_allowed})
+
+class Choices(APIView):
+    def get(self, request, user_type, format=None):
+        choices = []
+        for choice in models.ACTION_CHOICES:
+            choices.append(choice[1])
+        return Response({'choices': choices})
