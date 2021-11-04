@@ -10,6 +10,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { CircularProgress } from "@mui/material";
 
 import { Box } from "@mui/system";
 import Modal from "@mui/material/Modal";
@@ -34,6 +35,7 @@ export default class Action extends React.Component {
     openPopUp: false,
     permissions: [],
     choices: [],
+    next: "",
   };
 
   getLocalStorage() {
@@ -59,7 +61,7 @@ export default class Action extends React.Component {
 
   getCase() {
     axios.get(`http://localhost:8000/api/case/` + this.request_id, { headers: {Authorization: this.token} }).then((res) => {
-      const currentCase = res.data;
+      const currentCase = res.data.pop();
       this.setState({ ...this.state, currentCase });
     });
   }
@@ -100,7 +102,10 @@ export default class Action extends React.Component {
   
   render() {
     const { currentCase, action, next, notes, openPopUp, permissions, choices } = this.state;
-    console.log('permissions', [ ...permissions ]);
+    if (currentCase === null ) {
+        return <Box xs={{ display:'flex' }}><CircularProgress /></Box>
+    }
+    console.log(currentCase)
     return (
       <div className="flex flex-col m-3 md:mx-5 lg:mx-7">
         
