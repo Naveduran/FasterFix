@@ -11,6 +11,7 @@ urlpatterns = [
          name='token_refresh'),
 
     path('active/<str:user_type>', views.Active.as_view()),
+    path('permissions/<str:user_type>', views.Permissions.as_view()),
     path('done/<int:agent_id>', views.Done.as_view()),
     path('all/done/<str:criteria>', views.AllDone.as_view()),
     path('all/active/<str:criteria>', views.AllActive.as_view()),

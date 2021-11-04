@@ -67,6 +67,16 @@ def ActionstoStr(actions):
     return actions
 
 
+class Permissions(APIView):
+    """ Return list of actions of an agent """
+    def get(self, request, user_type, format=None):
+        permissions_allowed = getPermissions(user_type)
+        for index in range(len(permissions_allowed)):
+            permissions_allowed[index] = models.ACTION_CHOICES[permissions_allowed[index] - 1][1]
+        return Response({"permisions": permissions_allowed})
+
+
+
 class Active(APIView):
     """Return active requests"""
     def get(self, request, user_type, format=None):
