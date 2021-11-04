@@ -114,66 +114,54 @@ export default class Action extends React.Component {
     }
 
     return (
-      <div className="flex flex-col md:mx-5 lg:mx-7">
+      <div className="flex flex-col md:mx-2 lg:mx-7">
         
         <div className="flex justify-end">
-          <Fab color="primary" aria-label="add" href="/active">
-            <ArrowBackIosNewIcon />
-          </Fab>
+
         </div>
-        <h1>{currentCase?.next}</h1>
+        <h2>{currentCase?.next}</h2>
         <div className="flex flex-col md:flex-row justify-center mx-auto lg:gap-x-10 lg:gap-x-10 mt-4">
-          <div className="shadow overflow-hidden border-b sm:rounded-lg">
-            <table className="divide-y divide-gray-3 mx-auto w-10/12 md:w-72">
-                <p className="text-gray-600 font-bold py-1 lg:px-2">Case</p>
-                  <tr className="py-1 px-2">
-                    <td className="py-1 ml-1  font-normal text-gray-500 ">Id</td>
-                    <td className="py-1 ml-1 font-normal text-gray-500 text-center">{currentCase?.id}</td>
-                  </tr>
-                  <tr className="py-1">
-                    <p className="text-gray-600 font-bold py-1">Product</p>
+          <div className="overflow-hidden border-b sm:rounded-lg">
+            <table className=" mx-auto w-10/12 md:w-72">
+                  <tr>
+                    <td className="py-1 ml-2  font-normal text-black ">Case</td>
+                    <td className="py-1 ml-2 font-normal text-gray-500 text-center">{currentCase?.id}</td>
                   </tr>
                   <tr>
-                    <td className="py-1 ml-1 hidden font-normal text-gray-500">Reference</td>
-                    <td className="py-1 ml-1 hidden font-normal text-gray-500 text-center">{currentCase?.product?.id}</td>
+                    <td className="py-1 ml-2  font-normal text-black">Product</td>
+                    <td className="py-1 ml-2 font-normal text-gray-500 text-center">{currentCase?.product?.id}</td>
                   </tr>
                   <tr>
-                    <td className="py-1 ml-1 font-normal text-gray-500">Name</td>
-                    <td className="py-1 ml-1 font-normal text-gray-500 text-center">{currentCase?.product?.name}</td>
-                  </tr>
-                  <tr className="py-1">
-                    <p className="text-gray-600 font-bold py-1">Customer</p>
+                    <td className="py-1 ml-2 font-normal text-gray-500">Name</td>
+                    <td className="py-1 ml-2 font-normal text-gray-500 text-center">{currentCase?.product?.name}</td>
                   </tr>
                   <tr>
-                    <td className="py-1 ml-1 font-normal text-gray-500">Name</td>
-                    <td className="py-1 ml-1 font-normal text-gray-500 text-center">{currentCase?.customer?.name}</td>
+                    <td className="py-1 ml-2  font-normal text-black">Customer</td>
+                    <td className="py-1 ml-2 font-normal text-gray-500 text-center">{currentCase?.customer?.name}</td>
                   </tr>
                   <tr>
-                    <td className="py-1 ml-1 hidden font-normal text-gray-500">DNI</td>
-                    <td className="py-1 ml-1 hidden font-normal text-gray-500 text-center">{currentCase?.customer?.id}</td>
+                    <td className="py-1 ml-2  hidden font-normal text-gray-500">DNI</td>
+                    <td className="py-1 ml-2  hidden font-normal text-gray-500 text-center">{currentCase?.customer?.id}</td>
                   </tr>
                   <tr>
-                    <td className="py-1 ml-1 hidden font-normal text-gray-500">Phone</td>
-                    <td className="py-1 ml-1 hidden font-normal text-gray-500 text-center">{currentCase?.customer?.phone}</td>
+                    <td className="py-1 ml-2 font-normal text-gray-500">Phone</td>
+                    <td className="py-1 ml-2 font-normal text-gray-500 text-center">{currentCase?.customer?.phone}</td>
                   </tr>
                   <tr>
-                    <td className="py-1 ml-1 hidden font-normal text-gray-500">Adress</td>
-                    <td className="py-1 ml-1 hidden font-normal text-gray-500 text-center">{currentCase?.customer?.adress}</td>
+                    <td className="py-1 ml-2 font-normal text-gray-500">Adress</td>
+                    <td className="py-1 ml-2 font-normal text-gray-500 text-center">{currentCase?.customer?.adress}</td>
                   </tr>
                   <tr>
-                    <td className="py-1 ml-1 hidden font-normal text-gray-500">City</td>
-                    <td className="py-1 ml-1 hidden font-normal text-gray-500 text-center">{currentCase?.customer?.city}</td>
-                  </tr>
-                  <tr className="py-1">
-                    <p className="text-gray-600 hidden font-bold py-1">Billing</p>
+                    <td className="py-1 ml-2 font-normal text-gray-500">City</td>
+                    <td className="py-1 ml-2 font-normal text-gray-500 text-center">{currentCase?.customer?.city}</td>
                   </tr>
                   <tr>
-                    <td className="py-1 ml-1 hidden font-normal text-gray-500">Bill</td>
-                    <td className="py-1 ml-1 hidden font-normal text-gray-500 text-center">{currentCase?.purchase?.id}</td>
+                    <td className="py-1 ml-2  font-normal text-black">Bill</td>
+                    <td className="py-1 ml-2 font-normal text-gray-500 text-center">{currentCase?.purchase?.id}</td>
                   </tr>
                   <tr>
-                    <td className="py-1 ml-1 hidden font-normal text-gray-500">Date</td>
-                    <td className="py-1 ml-1 hidden font-normal text-gray-500 text-center">{new Date(currentCase?.purchase?.datetime).toLocaleDateString(
+                    <td className="py-1 ml-2 font-normal text-gray-500">Date</td>
+                    <td className="py-1 ml-2 font-normal text-gray-500 text-center">{new Date(currentCase?.purchase?.datetime).toLocaleDateString(
                             "en-US",
                             this.options
                           )} </td>
@@ -181,33 +169,33 @@ export default class Action extends React.Component {
               </table>
           </div>
           
-          <div className="justify-center items-center flex-col mx-auto md:w-auto lg:w-96 mt-5 md:mt-0 ">
+          <div className="justify-center items-center flex-col mx-auto md:w-auto lg:w-120 mt-5 md:mt-0 ">
             <div className="flex flex-col">
               <div className="-my-2  ">
                 <div className="">
-                  <div className="shadow hidden overflow-hidden border-b border-red-200 sm:rounded-lg">
+                  <div className="shadow overflow-hidden border-b border-red-200 sm:rounded-lg">
                     <table className="divide-y divide-gray-2 w-full ">
                     <thead className="bg-blue-400"></thead>
                     <tr>
-                      <th scope="col" className="px-6 py-3  lg:text-lg font-bold text-gray-700 uppercase tracking-wider text-center">
+                      <th scope="col" className="px-2 py-2 hidden lg:text-lg font-bold text-gray-600 tracking-wider text-center">
                         History
                       </th>
                     </tr>
                     {currentCase?.actions?.map((act, index) => (
                         <tr key={index}>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-2 py-1 hidden whitespace-nowrap">
                           <div className="flex items-center">
                               <div className="text-gray-500 font-normal">{act?.action}</div>
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-2 py-1 hidden whitespace-nowrap">
                           <div className="text-gray-500">{new Date(act?.datetime).toLocaleDateString(
                             "en-US",
                             this.options
                           )}</div>
                         </td>
 
-                        <td className="px-6 py-4 whitespace-nowrap text-gray-500">{act?.note}</td>
+                        <td className="px-2 py-1 hidden whitespace-nowrap text-gray-500">{act?.note}</td>
                       </tr>
                     ))}
                     </table>
@@ -215,11 +203,11 @@ export default class Action extends React.Component {
                 </div>
               </div>
             </div>
-          <div className="flex flex-col space-y-4">
+          <div className="flex flex-col space-y-2">
             <FormControl
               variant="standard"
               sx={{ m: 1, minWidth: 120 }}
-              className="space-y-6">
+              className="space-y-2">
               <InputLabel id="action-label">
                 Mark as
               </InputLabel>
@@ -250,7 +238,7 @@ export default class Action extends React.Component {
             <FormControl
               variant="standard"
               sx={{ m: 1, minWidth: 120 }}
-              className="space-y-6"
+              className="space-y-2"
             >
               <InputLabel id="next-label">
                 Assign to
@@ -261,7 +249,7 @@ export default class Action extends React.Component {
                 onChange={this.handleNext.bind(this)}
                 label="Next"
                 labelId="next-label"
-                className="py-2 "
+                className="py-2"
               >
               {choices.map((choice, index) => (
                 <MenuItem key={index} value={index}>
