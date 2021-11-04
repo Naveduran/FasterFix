@@ -1,7 +1,5 @@
 import React from 'react';
 import BackButton from "../components/backbtn";
-import ProductDetails from "../components/product";
-import HistoryTable from "../components/table";
 import { Link } from "react-router-dom";
 export default function SellerView(){
     return(
@@ -13,8 +11,7 @@ export default function SellerView(){
             </div>
             <h1 className="mt-9">Detailed View</h1>
             <div className="flex justify-center mx-auto gap-x-20 mt-12">
-                <ProductDetails/>
-                <HistoryTable/>
+
             </div>
         </div>        
     );

@@ -1,8 +1,7 @@
 import React from 'react';
-import Notesdetail from '../components/notes';
+
 import BackButton from '../components/backbtn';
-import MyDroopDown from '../components/mydropdown';
-import HistoryTable from '../components/table';
+
 import { Link } from 'react-router-dom';
 
 export default function Autorize() {
@@ -24,12 +23,9 @@ export default function Autorize() {
           </div>
         </div> 
         <div >
-          <HistoryTable/>
         </div>
       </div>
       <div className="flex justify-center mt-10 gap-x-10">
-        <MyDroopDown/>
-        <Notesdetail/>
       </div>
       </div> 
   );
