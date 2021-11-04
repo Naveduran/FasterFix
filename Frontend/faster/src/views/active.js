@@ -14,13 +14,17 @@ export default class Active extends React.Component {
   state = {
     cases: []
   }
-  
+
   componentDidMount() {
     axios.get(url + user_type, { headers: {Authorization: token} })
       .then(res => {
         const cases = res.data;
         this.setState({ cases });
       })
+  }
+  nextAction(id) {
+      localStorage.setItem("current_case", id);
+      window.location.href = '/action';
   }
 
   render() {
@@ -57,7 +61,7 @@ export default class Active extends React.Component {
                             <td className="px-6 py-4 whitespace-nowrap">{c.last_update}</td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <button 
-                              href="/active/:agent_id/:request_id:"
+                              onClick={() => this.nextAction(c.id)}
                               className="rounded-lg px-2 bg-white border-4 text-blue-600 border-blue-200">{c.next}</button></td>
                             </tr>)}
                       </table>
