@@ -39,7 +39,7 @@ export default class Done extends React.Component {
                       <th>Next</th>
                       <th></th>
                     </tr>
-                    {this.state.cases.map(c => <tr><td>{c.request}</td><td>{c.product}</td><td>{c.datetime}</td><td>{c.next}</td><td><button>Details</button></td></tr>)}
+                    {this.state.cases.map((c, index) => <tr key={index}><td>{c.request}</td><td>{c.product}</td><td>{c.datetime}</td><td>{c.next}</td><td><button>Details</button></td></tr>)}
                   </table>
                 </div>
               </div>
@@ -47,7 +47,6 @@ export default class Done extends React.Component {
           </div>
         </div>
       </div>
-
     )
   }
 }
