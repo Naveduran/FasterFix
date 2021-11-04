@@ -11,7 +11,7 @@ import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 
 
-const request_id = 5;
+const request_id = localStorage.getItem("current_case");
 
 const user_type= localStorage.getItem("user_type")
 const token = `JWT ${localStorage.getItem("token")}`
