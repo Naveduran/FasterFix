@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import SimpleBottomNavigation from '../components/navigation';
+import TableRow from '../components/tableRows';
+import Tabletittle from '../components/tableTitles';
 const url = `http://localhost:8000/api/all/active/`
 const user_type = `datetime`
 
@@ -32,27 +34,18 @@ export default class AllActive extends React.Component {
                     <thead className="bg-blue-400"></thead>
           
                       <tr>
-                        <th 
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Case(id)</th>
-                        <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Product(name)</th>
-                        <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Next</th>
-                        <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Assigned on </th>
-                        <th scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"/>
+                        <Tabletittle value="Case(id)"/>
+                        <Tabletittle value="Product(name)"/>
+                        <Tabletittle value="Next"/>
+                        <Tabletittle value="Assigned on"/>
+                        <Tabletittle/>
                       </tr>
                         { this.state.cases.map((c, index) => 
                           <tr key={index}>
-                            <td className="px-6 py-4 whitespace-nowrap">{c.id}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">{c.product.name}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">{c.next}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">{c.last_update}</td>
+                            <TableRow value={c.id}/>
+                            <TableRow value={c.product.name}/>
+                            <TableRow value={c.next}/>
+                            <TableRow value={c.last_update}/>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <button 
                               href="/active/:agent_id/:request_id:"

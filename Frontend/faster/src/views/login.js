@@ -6,7 +6,7 @@ class LoginPage extends Component {
   state = {
     status: 1
   }
-    obtain = () => {
+    obtain(){
     let email_login = document.getElementById('email_login').value
     let password_login = document.getElementById('password_login').value
     axios.post('http://localhost:8000/api/token/obtain', {
@@ -30,10 +30,9 @@ class LoginPage extends Component {
   }
   render(){
 
-  
   return (<div>
     
-    {this.state.status ? <LoginForm obj={this.obtain}/> : <h1>WAIT...</h1>}
+    {this.state.status ? <LoginForm obj={this.obtain.bind(this)}/> : <h1>WAIT...</h1>}
     
     
   </div>
